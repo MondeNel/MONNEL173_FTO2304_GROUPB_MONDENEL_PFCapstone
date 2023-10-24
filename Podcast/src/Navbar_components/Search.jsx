@@ -5,7 +5,7 @@ import './Navbar.css';
 
 const API_URL = 'https://podcast-api.netlify.app/shows';
 
-const Searchbar = () => {
+const Search = () => {
     const [input, setInput] = useState('');
     const [filteredData, setFilteredData] = useState([]);
     const [showResults, setShowResults] = useState(false);
@@ -96,4 +96,4 @@ const Searchbar = () => {
     );
 };
 
-export default Searchbar;
+export default Search;
