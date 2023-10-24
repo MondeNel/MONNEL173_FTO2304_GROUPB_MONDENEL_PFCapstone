@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import Home from './Main_components/Home';
 import SignUp from './Signup_components/SignUp';
 import Login from './Signup_components/Login';
-import Search from './Navbar_components/Search';
+import Navbar from './Navbar_components/Navbar';
 
 /**
  * Functional component representing the main application.
@@ -19,7 +19,7 @@ const App = () => {
       <Route path="/" element={<Home />} /> {/* Renders the Home component at the root path. */}
       <Route path="/signup" element={<SignUp />} /> {/* Renders the SignUp component at /app/signup. */}
       <Route path="/login" element={<Login />} /> {/* Renders the Login component at /app/login. */}
-      <Route path="/search" element={<Search />} /> {/* Renders the Search component at /app/search. */}
+      <Route path="/navbar" element={<Navbar />} /> {/* Renders the Search component at /app/search. */}
     </Routes>
 
   );
