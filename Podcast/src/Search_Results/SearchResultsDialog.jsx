@@ -21,7 +21,7 @@ const SearchResultsDialog = ({ show }) => {
                 </div>
 
                 <div className="dropdown">
-                    <button className="dropbtn">Season</button>
+                    <button className="dropbtn">Seasons</button>
                     <div className="dropdown-content">
                         {seasons.map((season) => (
                             <a key={season} href="#">
