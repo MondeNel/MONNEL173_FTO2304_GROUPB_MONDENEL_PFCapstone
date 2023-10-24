@@ -89,8 +89,9 @@ const Searchbar = () => {
             </div>
 
             {selectedShow && (
-                <SearchResultsDialog show={selectedShow} />
+                <SearchResultsDialog show={selectedShow} onClose={() => setSelectedShow(null)} />
             )}
+
         </div>
     );
 };
