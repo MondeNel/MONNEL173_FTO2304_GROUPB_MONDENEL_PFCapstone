@@ -21,12 +21,14 @@ const ShowCard = ({ show, onToggleFavorite }) => {
 
     return (
         <div className={`show-card ${isFavorite ? 'favorite' : ''}`}>
-            <img src={show.image} alt={show.title} />
-            <h2>{show.title}</h2>
-            <button onClick={openDialog}>Show Details</button>
+            <div className="card-content">
+                <img src={show.image} alt={show.title} />
+                <h2>{show.title}</h2>
+                <button onClick={openDialog}>Show Details</button>
 
-            <div className={`favorite-icon ${isFavorite ? 'favorite' : ''}`} onClick={toggleFavorite}>
-                {isFavorite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'grey' }} />}
+                <div className={`favorite-icon ${isFavorite ? 'favorite' : ''}`} onClick={toggleFavorite}>
+                    {isFavorite ? <FavoriteIcon style={{ color: 'red' }} /> : <FavoriteIcon style={{ color: 'grey' }} />}
+                </div>
             </div>
 
             {isDialogOpen && (

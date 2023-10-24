@@ -17,10 +17,15 @@ function Search() {
         if (searchInput) {
             setLoading(true);
 
-            fetch(`${API_URL}?q=${searchInput}`)
+            fetch(API_URL)
                 .then((response) => response.json())
                 .then((data) => {
-                    setSearchResults(data);
+                    // Filter the shows that contain the character(s) typed by the user
+                    const filteredShows = data.filter((show) =>
+                        show.title.toLowerCase().includes(searchInput.toLowerCase())
+                    );
+
+                    setSearchResults(filteredShows);
                     setLoading(false);
                 })
                 .catch((error) => {
@@ -38,7 +43,6 @@ function Search() {
 
     // Function to open the dialog with selected show information
     const showOverlayDialog = (show) => {
-        console.log('Selected Show:', show); // Console log the selected show
         setSelectedShow(show);
     };
 
@@ -63,13 +67,17 @@ function Search() {
             {!loading && searchResults.length === 0 && searchInput !== '' && (
                 <p>No results found.</p>
             )}
-            <ul>
+            <div className="autocomplete-results">
                 {searchResults.map((result) => (
-                    <li key={result.id} onClick={() => showOverlayDialog(result)}>
+                    <div
+                        key={result.id}
+                        onClick={() => showOverlayDialog(result)}
+                        className="autocomplete-result"
+                    >
                         {result.title}
-                    </li>
+                    </div>
                 ))}
-            </ul>
+            </div>
 
             {/* ShowCard dialog */}
             {selectedShow && (
