@@ -90,6 +90,10 @@ function SignUp() {
         color: 'white',
     };
 
+    const handleLoginClick = () => {
+        navigate('/login');
+    };
+
     return (
         <Container component="main" maxWidth="xs">
             <Paper elevation={3} style={{ padding: '20px', marginTop: '30px' }}>
@@ -165,7 +169,7 @@ function SignUp() {
                         <span>
                             Already have an account?{' '}
                             <a href="/login" className="link login-link">
-                                <button> Login </button>
+                                <button onClick={handleLoginClick}> Login </button>
                             </a>
                         </span>
                     </div>
