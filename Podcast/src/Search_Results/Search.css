@@ -1,0 +1,75 @@
+/* Add a class to hide the dropdown content by default */
+.dropdown-content {
+    display: none;
+
+}
+
+/* Show the dropdown content when hovering over the "Season" button */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+
+
+/* ========= Styles for the modal overlay ========== */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(5px);
+}
+
+.selected-show {
+    display: flex;
+    position: relative;
+    font-family: Arial;
+    padding: 16px;
+    margin: 16px;
+    width: 950px;
+    height: 450px;
+    background: white;
+    box-shadow: 0px 30px 18px -8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.selected-show img {
+    max-width: 100%;
+    flex: 0 0 40%;
+    /* Adjust the width of the image */
+    margin-right: 10px;
+    /* Add some spacing between the image and text */
+}
+
+.title-show {
+    width: 25%;
+    /* Adjust the width of the text */
+}
+
+.selected-show:hover {
+    box-shadow: 10px 30px 18px -8px rgba(7, 0, 0, 0.1);
+    transform: scale(1.05, 1.05);
+}
+
+.selected-show h2 {
+    font-size: 1.5rem;
+    margin: 8px 0;
+}
+
+.paragraph__text {
+    position: absolute;
+    bottom: 20px;
+    right: 10px;
+    left: 10px;
+    background-color: rgb(59, 58, 58);
+    color: white;
+    padding-left: 20px;
+
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
