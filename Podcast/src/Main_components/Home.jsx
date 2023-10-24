@@ -1,14 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import ShowCard from './ShowCard';
+import './Content.css'
 import Navbar from '../Navbar_components/Navbar';
 
-const API_URL = 'https://podcast-api.netlify.app/shows';
-
-const Home = () => {
-    const [data, setData] = useState(null);
+const Home = ({ selectedShow }) => {
+    const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);
     const [showMore, setShowMore] = useState(false);
     const [sortAscending, setSortAscending] = useState(true);
 
+
+    // Define the mapping between GENRE ids and titles
     const genreMapping = {
         1: "Personal Growth",
         2: "True Crime and Investigative Journalism",
@@ -22,17 +24,16 @@ const Home = () => {
     };
 
     useEffect(() => {
-        // Fetch data when the component mounts
-        fetch(API_URL)
+        const apiUrl = 'https://podcast-api.netlify.app/shows';
+        fetch(apiUrl)
             .then((response) => {
                 if (!response.ok) {
-                    throw new Error(`Fetch error: ${response.status} - ${response.statusText}`);
+                    throw Error(`Fetch error: ${response.status} - ${response.statusText}`);
                 }
                 return response.json();
             })
-            .then((result) => {
-                setData(result);
-                console.log(result); // Log the fetched data
+            .then((data) => {
+                setShows(data);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -56,33 +57,54 @@ const Home = () => {
         setShowMore((prevShowMore) => !prevShowMore);
     };
 
-
     const toggleSortOrder = () => {
         setSortAscending((prevSortAscending) => !prevSortAscending);
     };
 
 
+
     return (
-        <div>
-            <Navbar />
+        <div className="container">
 
-            <h2>Shows to Listen and Watch</h2>
 
-            <button onClick={toggleSortOrder} className="sort-button">
-                Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
-            </button>
+            <div className="main__content">
 
-            {data ? (
-                <div>
-                    {/* Display data or any other components here */}
+                <Navbar />
+
+                <h2>Shows to Listen and Watch</h2>
+
+                <button onClick={toggleSortOrder} className="sort-button">
+                    Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
+                </button>
+
+                {selectedShow && (
+                    <div className="selected-show">
+                        <h2>Selected Show</h2>
+                        <h3>{selectedShow.title}</h3>
+                        <img src={selectedShow.image} alt={selectedShow.title} />
+                        <p>{selectedShow.description}</p>
+                    </div>
+                )}
+
+
+
+                <div className="grid__container">
+                    {visibleShows.map((show, index) => (
+                        <ShowCard
+                            key={index}
+                            show={show}
+                            genreMapping={genreMapping}
+                            onToggleFavorite={() => addFavoriteShow(show)} // Pass the function to add a favorite show
+                        />
+                    ))}
                 </div>
-            ) : (
-                <div>Loading...</div>
-            )}
 
-            <button>Log out</button>
+                <button onClick={toggleShowMore} className="show-more-button">
+                    {showMore ? 'Show Less' : 'Show More'}
+                </button>
+            </div>
         </div>
     );
-}
+};
 
 export default Home;

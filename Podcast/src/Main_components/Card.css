@@ -1,0 +1,143 @@
+.show__card {
+    padding: 16px;
+    margin: 16px;
+    width: 300px;
+}
+
+.show__card:hover {
+    box-shadow: 10px 30px 18px -8px rgba(7, 0, 0, 0.1);
+    transform: scale(1.05, 1.05);
+    cursor: pointer;
+}
+
+.show__card img {
+    max-width: 100%;
+}
+
+.show__card h2 {
+    font-size: 1.5rem;
+    margin: 8px 0;
+
+}
+
+.show__card p {
+    font-size: 1rem;
+    color: #666;
+    /* Customize the color as needed */
+}
+
+.show__card button {
+    background-color: #0073e6;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.show__card button:hover {
+    background-color: #005bab;
+}
+
+
+
+/* ============= Dialog ============ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ShowCard.css */
+.favorite-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid transparent;
+    /* Add border styling */
+    border-radius: 50%;
+    /* Make it round */
+    cursor: pointer;
+}
+
+.favorite {
+    border-color: red;
+    /* Change the border color to red when marked */
+}
+
+.favorite-icon:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.show__align {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+
+
+
+/* ========== dropdown ======== */
+.show__card {
+    /* Your existing styles */
+
+    position: relative;
+}
+
+.dialog {
+    /* Your existing styles for the dialog */
+    /* Add the following styles to create space for dropdowns */
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.dropdowns {
+    /* Add the following styles to position the dropdowns properly */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* Add styles for the dropdown select elements */
+.dropdowns select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Add styles for the video element */
+.dialog video {
+    max-width: 100%;
+}
+
+
+
+/* =========== Play button ============= */
+.play_button {
+    font-size: 35px !important;
+    /* Use !important to ensure this rule takes precedence */
+    color: red;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.play_button:hover {
+    color: rgb(119, 81, 81);
+}
