@@ -3,7 +3,12 @@ import ShowCard from './ShowCard';
 import './Content.css'
 import Navbar from '../Navbar_components/Navbar';
 
+import supabase from '../config/supabaseClient';
+
 const Home = ({ selectedShow }) => {
+
+
+
     const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);
     const [showMore, setShowMore] = useState(false);
