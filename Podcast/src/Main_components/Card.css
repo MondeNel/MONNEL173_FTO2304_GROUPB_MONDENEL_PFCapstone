@@ -5,9 +5,10 @@
 }
 
 .show__card:hover {
-    box-shadow: 10px 30px 18px -8px rgba(7, 0, 0, 0.1);
-    transform: scale(1.05, 1.05);
-    cursor: pointer;
+    transition: transform .3s;
+    -ms-transform: scale(1.4);
+    -webkit-transform: scale(1.4);
+    transform: scale(1.2);
 }
 
 .show__card img {
@@ -40,23 +41,6 @@
 .show__card button:hover {
     background-color: #005bab;
 }
-
-
-
-/* ============= Dialog ============ */
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -94,17 +78,9 @@
 
 
 /* ========== dropdown ======== */
+
 .show__card {
-    /* Your existing styles */
-
     position: relative;
-}
-
-.dialog {
-    /* Your existing styles for the dialog */
-    /* Add the following styles to create space for dropdowns */
-    margin-top: 10px;
-    padding-top: 10px;
 }
 
 .dropdowns {

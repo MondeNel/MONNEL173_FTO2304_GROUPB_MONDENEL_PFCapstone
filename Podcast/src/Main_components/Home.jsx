@@ -62,6 +62,27 @@ const Home = ({ selectedShow }) => {
     };
 
 
+    const addFavoriteShow = (show) => {
+        // Retrieve the list of favorite shows from localStorage or your data source
+        const favoriteShows = JSON.parse(localStorage.getItem('favoriteShows')) || [];
+
+        const isFavorite = favoriteShows.some((favoriteShow) => favoriteShow.id === show.id);
+
+        if (isFavorite) {
+            // Remove the show from favorites
+            const updatedFavorites = favoriteShows.filter((favoriteShow) => favoriteShow.id !== show.id);
+            localStorage.setItem('favoriteShows', JSON.stringify(updatedFavorites));
+            console.log("Removed from favorites:", show.title);
+        } else {
+            // Add the show to favorites
+            favoriteShows.push(show);
+            localStorage.setItem('favoriteShows', JSON.stringify(favoriteShows));
+            console.log("Added to favorites:", show.title);
+        }
+    };
+
+
+
 
     return (
         <div className="container">
@@ -94,7 +115,7 @@ const Home = ({ selectedShow }) => {
                             key={index}
                             show={show}
                             genreMapping={genreMapping}
-                            onToggleFavorite={() => addFavoriteShow(show)} // Pass the function to add a favorite show
+                            onToggleFavorite={() => addFavoriteShow(show)}
                         />
                     ))}
                 </div>
