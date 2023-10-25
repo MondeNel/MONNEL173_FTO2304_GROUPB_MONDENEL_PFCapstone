@@ -1,19 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ShowCard from './ShowCard';
 import './Content.css'
-import Navbar from '../Navbar_components/Navbar';
-
-import supabase from '../config/supabaseClient';
+import Navbar from '../Header_components/Navbar';
 
 const Home = ({ selectedShow }) => {
-
-
-
     const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);
     const [showMore, setShowMore] = useState(false);
     const [sortAscending, setSortAscending] = useState(true);
-
 
     // Define the mapping between GENRE ids and titles
     const genreMapping = {
@@ -66,43 +60,19 @@ const Home = ({ selectedShow }) => {
         setSortAscending((prevSortAscending) => !prevSortAscending);
     };
 
-
-    const addFavoriteShow = (show) => {
-        // Retrieve the list of favorite shows from localStorage or your data source
-        const favoriteShows = JSON.parse(localStorage.getItem('favoriteShows')) || [];
-
-        const isFavorite = favoriteShows.some((favoriteShow) => favoriteShow.id === show.id);
-
-        if (isFavorite) {
-            // Remove the show from favorites
-            const updatedFavorites = favoriteShows.filter((favoriteShow) => favoriteShow.id !== show.id);
-            localStorage.setItem('favoriteShows', JSON.stringify(updatedFavorites));
-            console.log("Removed from favorites:", show.title);
-        } else {
-            // Add the show to favorites
-            favoriteShows.push(show);
-            localStorage.setItem('favoriteShows', JSON.stringify(favoriteShows));
-            console.log("Added to favorites:", show.title);
-        }
+    const logFavoriteShow = (message) => {
+        // Implement your favorite show logging logic here
+        console.log(message);
     };
-
-
-
 
     return (
         <div className="container">
-
-
             <div className="main__content">
-
                 <Navbar />
-
                 <h2>Shows to Listen and Watch</h2>
-
                 <button onClick={toggleSortOrder} className="sort-button">
                     Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
                 </button>
-
                 {selectedShow && (
                     <div className="selected-show">
                         <h2>Selected Show</h2>
@@ -111,20 +81,16 @@ const Home = ({ selectedShow }) => {
                         <p>{selectedShow.description}</p>
                     </div>
                 )}
-
-
-
                 <div className="grid__container">
                     {visibleShows.map((show, index) => (
                         <ShowCard
                             key={index}
                             show={show}
                             genreMapping={genreMapping}
-                            onToggleFavorite={() => addFavoriteShow(show)}
+                            logFavoriteShow={logFavoriteShow} // Pass the logFavoriteShow function
                         />
                     ))}
                 </div>
-
                 <button onClick={toggleShowMore} className="show-more-button">
                     {showMore ? 'Show Less' : 'Show More'}
                 </button>
