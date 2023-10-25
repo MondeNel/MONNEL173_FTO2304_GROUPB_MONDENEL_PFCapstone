@@ -4,7 +4,6 @@ import { Routes, Route } from 'react-router-dom';
 
 import Home from './Main_components/Home';
 import SignUp from './Signup_components/SignUp';
-import Login from './Signup_components/Login';
 import FavoriteList from './FavoriteShows/FavoriteList';
 
 
@@ -17,10 +16,11 @@ import FavoriteList from './FavoriteShows/FavoriteList';
 const App = () => {
   return (
 
+
     <Routes>
-      <Route path="/" element={<Home />} /> {/* Renders the Home component at the root path. */}
-      <Route path="/signup" element={<SignUp />} /> {/* Renders the SignUp component at /app/signup. */}
-      <Route path="/login" element={<Login />} /> {/* Renders the Login component at /app/login. */}
+      <Route path="/" element={<SignUp />} /> {/* Renders the Home component at the root path. */}
+
+      <Route path="/home" element={<Home />} /> {/* Renders the SignUp component at /app/signup. */}
       <Route path="/favoriteList" element={<FavoriteList />} /> {/* Renders the Search component at /app/search. */}
     </Routes>
 

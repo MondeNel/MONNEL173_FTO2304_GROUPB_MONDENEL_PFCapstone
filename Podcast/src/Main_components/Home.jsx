@@ -3,6 +3,7 @@ import ShowCard from './ShowCard';
 import './Content.css'
 import Navbar from '../Header_components/Navbar';
 
+
 const Home = ({ selectedShow }) => {
     const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);

@@ -174,21 +174,78 @@
 
 /* Style the links inside the dropdown */
 .dropdown-content a {
-    color: #333;
-    /* Text color for links */
     padding: 12px 16px;
     /* Add padding to the links */
     text-decoration: none;
     display: block;
 }
 
-/* Change link color on hover */
-.dropdown-content a:hover {
-    background-color: #ddd;
-    /* Background color on hover */
-}
+
 
 /* Show the dropdown content when hovering over the dropdown button */
 .dropdown:hover .dropdown-content {
     display: block;
+}
+
+
+/* ============== Shared Button Styles ============== */
+.button {
+    text-decoration: none;
+    background-color: #FF5733;
+    /* Set your desired background color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    /* Adjust spacing between elements */
+    margin-bottom: 10px;
+    /* Add margin between buttons */
+}
+
+.button:hover {
+    background-color: #FF0000;
+    /* Change color on hover */
+}
+
+/* Apply the shared styles to both buttons */
+.link-button {
+    text-decoration: none;
+
+    /* Set your desired background color */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    /* Adjust spacing between elements */
+    margin-bottom: 10px;
+    /* Add margin between buttons */
+}
+
+.link-button:hover {
+    color: red;
+    /* Change color on hover */
+}
+
+.log-out-button {
+    text-decoration: none;
+    background-color: #f9f9f9;
+    /* Set your desired background color */
+    color: black;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    margin-right: 10px;
+    /* Adjust spacing between elements */
+    margin-bottom: 10px;
+    /* Add margin between buttons */
+}
+
+.log-out-button:hover {
+    color: red;
+    /* Change color on hover */
 }
