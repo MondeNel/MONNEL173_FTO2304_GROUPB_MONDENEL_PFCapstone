@@ -61,7 +61,6 @@ const Home = ({ selectedShow }) => {
     };
 
     const logFavoriteShow = (message) => {
-        // Implement your favorite show logging logic here
         console.log(message);
     };
 
