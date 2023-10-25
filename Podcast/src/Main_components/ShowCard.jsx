@@ -10,12 +10,11 @@ import './Card.css';
 
 import supabase from '../config/supabaseClient';
 
-const ShowCard = ({ show, genreMapping, logFavoriteShow }) => {
+const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
+
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState('');
     const [isFavorite, setIsFavorite] = useState(false);
-
-
 
     const openDialog = () => {
         setDialogOpen(true);
@@ -25,26 +24,27 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow }) => {
         setDialogOpen(false);
     };
 
-    const toggleFavorite = () => {
+    const toggleFavorite = async () => {
         // Toggle the favorite state and update the color accordingly
         setIsFavorite(!isFavorite);
         if (!isFavorite) {
             logFavoriteShow(`Added to favorites: ${show.title}`);
-
-            // Send the movie title to the Supabase table 'favorite_shows'
             const favoriteShow = { title: show.title };
             supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
                 if (error) {
                     console.error('Error adding to favorite shows:', error);
                 } else {
                     console.log('Added to favorite shows:', data);
+                    if (updateFavoriteShows) {
+                        // Call the updateFavoriteShows callback to update the favoriteShows state in FavoriteList
+                        updateFavoriteShows([...favoriteShows, favoriteShow]);
+                    }
                 }
             });
         } else {
             logFavoriteShow(`Removed from favorites: ${show.title}`);
         }
     };
-
 
     const updatedDate = new Date(show.updated);
     const year = updatedDate.getFullYear();
@@ -97,19 +97,18 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow }) => {
 
                     <br />
 
-                    <div className="genres">
-                        {show.genres.map((genreId) => (
-                            <div key={genreId} className="genre">
-                                {genreMapping[genreId] && (
-                                    <>
-                                        {genreId === 1 && <VideoLibraryIcon />}
-                                        {genreId === 2 && <HistoryIcon />}
-                                        <span>{genreMapping[genreId]}</span>
-                                    </>
-                                )}
-                            </div>
-                        ))}
-                    </div>
+                    {show.genres && show.genres.map((genreId) => (
+                        <div key={genreId} className="genre">
+                            {genreMapping[genreId] && (
+                                <>
+                                    {genreId === 1 && <VideoLibraryIcon />}
+                                    {genreId === 2 && <HistoryIcon />}
+                                    <span>{genreMapping[genreId]}</span>
+                                </>
+                            )}
+                        </div>
+                    ))}
+
 
                     <div className="dropdowns">
                         <label htmlFor="season">Select a season:</label>
