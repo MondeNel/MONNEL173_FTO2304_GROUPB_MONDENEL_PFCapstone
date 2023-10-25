@@ -72,6 +72,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
     return (
         <div className="show__card">
             <img src={show.image} alt={show.title} />
+
             <h2>{show.title}</h2>
 
             <div className="show__align">

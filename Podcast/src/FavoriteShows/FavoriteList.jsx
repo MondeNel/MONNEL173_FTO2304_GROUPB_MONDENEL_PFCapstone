@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './Favorite.css'
+import './Favorite.css';
 import ShowCard from '../Main_components/ShowCard';
 
 import supabase from '../config/supabaseClient';
@@ -20,7 +20,6 @@ const FavoriteList = () => {
         };
 
         fetchFavoriteShows();
-
     }, []);
 
     const updateFavoriteShows = (updatedShows) => {
@@ -29,11 +28,13 @@ const FavoriteList = () => {
 
     return (
         <div>
-            <h1>Favorite Shows</h1>
-            {favoriteShows.map((show, index) => (
-                <ShowCard key={index} show={show} updateFavoriteShows={updateFavoriteShows} />
-            ))}
+            <h3 className='title'>Favorite Shows</h3>
+            <div className="grid_container">
+                {favoriteShows.map((show, index) => (
+                    <ShowCard key={index} show={show} image={show.image} updateFavoriteShows={updateFavoriteShows} />
+                ))}
 
+            </div>
         </div>
     );
 };

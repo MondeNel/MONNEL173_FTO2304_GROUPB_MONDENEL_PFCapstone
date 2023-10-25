@@ -1,43 +1,9 @@
-.show__card {
-    padding: 16px;
-    margin: 16px;
-    width: 300px;
-}
-
-.show__card:hover {
-    transition: transform .3s;
-    -ms-transform: scale(1.4);
-    -webkit-transform: scale(1.4);
-    transform: scale(1.2);
-}
-
-.show__card img {
-    max-width: 100%;
-}
-
-.show__card h2 {
-    font-size: 1.5rem;
-    margin: 8px 0;
+.grid_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
 
 }
 
-.show__card p {
-    font-size: 1rem;
-    color: #666;
-    /* Customize the color as needed */
-}
-
-.show__card button {
-    background-color: #0073e6;
-    color: white;
-    border: none;
-    padding: 8px 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
-}
-
-.show__card button:hover {
-    background-color: #005bab;
+.title {
+    font-size: medium;
 }
