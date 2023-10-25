@@ -8,10 +8,14 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import './Card.css';
 
+import supabase from '../config/supabaseClient';
+
 const ShowCard = ({ show, genreMapping, logFavoriteShow }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState('');
-    const [isFavorite, setIsFavorite] = useState(false); // Add isFavorite state
+    const [isFavorite, setIsFavorite] = useState(false);
+
+
 
     const openDialog = () => {
         setDialogOpen(true);
@@ -26,10 +30,21 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow }) => {
         setIsFavorite(!isFavorite);
         if (!isFavorite) {
             logFavoriteShow(`Added to favorites: ${show.title}`);
+
+            // Send the movie title to the Supabase table 'favorite_shows'
+            const favoriteShow = { title: show.title };
+            supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
+                if (error) {
+                    console.error('Error adding to favorite shows:', error);
+                } else {
+                    console.log('Added to favorite shows:', data);
+                }
+            });
         } else {
             logFavoriteShow(`Removed from favorites: ${show.title}`);
         }
     };
+
 
     const updatedDate = new Date(show.updated);
     const year = updatedDate.getFullYear();
