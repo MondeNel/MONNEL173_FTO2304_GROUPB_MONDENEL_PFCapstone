@@ -81,6 +81,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                 seasons: show.seasons,
                 updated: show.updated,
                 genres: show.genres.map((genreId) => genreMapping[genreId]),
+                image: show.image,
             };
 
             supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
@@ -146,7 +147,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                     <br />
                     <h3>Year: {year}</h3>
                     <br />
-                    {show.genres && show.genres.map((genreId) => (
+                    {show.genres && Array.isArray(show.genres) && show.genres.map((genreId) => (
                         <div key={genreId} className="genre">
                             {genreMapping[genreId] && (
                                 <div>
@@ -154,11 +155,10 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                                     {genreId === 2 && <HistoryIcon />}
                                     <span>{genreMapping[genreId]}</span>
                                 </div>
-
                             )}
                         </div>
-                    )
-                    )}
+                    ))}
+
 
                     <div className="dropdowns">
                         {/* Step 6: Dropdown for SEASON Selection */}

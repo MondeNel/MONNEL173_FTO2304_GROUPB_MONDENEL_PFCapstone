@@ -16,7 +16,7 @@ const FavoriteList = () => {
     const fetchFavoriteShows = async () => {
         const { data, error } = await supabase
             .from('favorite_shows')
-            .select('id, created_at, title, description, seasons, updated, genres');
+            .select('id, created_at, title, description, seasons, updated, genres, image');
 
         if (error) {
             console.error('Error fetching favorite shows:', error);
@@ -37,14 +37,14 @@ const FavoriteList = () => {
 
     return (
         <div>
-            <h3 className='title'>Favorite Shows</h3>
+            <h1 className='title'>Favorite Shows</h1>
             <div className="grid_container">
                 {isDataFetched &&
                     favoriteShows.map((show, index) => (
                         <ShowCard
                             key={index}
                             show={show}
-                            image={show.image} // You should have an 'image' property in your show data
+                            image={show.image}
                             updateFavoriteShows={updateFavoriteShows}
                         />
                     ))}
