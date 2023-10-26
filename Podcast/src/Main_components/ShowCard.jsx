@@ -16,14 +16,23 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
     const [selectedEpisode, setSelectedEpisode] = useState(''); // Selected EPISODE
     const [isFavorite, setIsFavorite] = useState(false);
 
-
+    const [showSeasons, setShowSeasons] = useState([]); // To store SEASON data
+    const [showEpisodes, setShowEpisodes] = useState([]); // To store EPISODE data
 
     const openDialog = async () => {
         try {
             const response = await fetch(`https://podcast-api.netlify.app/id/${show.id}`);
             if (response.ok) {
                 const data = await response.json();
-                // Process and set the data for SEASONs and EPISODEs here
+
+                // Extract SEASON data from the API response
+                const { seasons } = data;
+
+                // Log the SEASONS
+                console.log('SEASONS:', seasons);
+
+                // Set the SEASON data in state
+                setShowSeasons(seasons);
             } else {
                 console.error('Error fetching show details:', response.status, response.statusText);
             }
@@ -31,6 +40,31 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
             console.error('Error fetching show details:', error);
         }
         setDialogOpen(true);
+    }
+
+    // Handle SEASON Selection
+    const handleSeasonChange = (event) => {
+        const selectedSeasonValue = event.target.value;
+        setSelectedSeason(selectedSeasonValue);
+
+        // Extract EPISODE data from the selected season
+        if (selectedSeasonValue) {
+            const selectedSeasonData = showSeasons.find((season) => season.title === selectedSeasonValue);
+            if (selectedSeasonData) {
+                const episodes = selectedSeasonData.episodes;
+                setShowEpisodes(episodes);
+
+                // Log the selected season and its episodes
+                console.log('Selected Season:', selectedSeasonData);
+                console.log('Episodes:', episodes);
+            }
+        } else {
+            // If no season is selected, clear the episodes
+            setShowEpisodes([]);
+
+            // Log that no season is selected
+            console.log('No Season Selected');
+        }
     };
 
 
@@ -61,26 +95,28 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
     const updatedDate = new Date(show.updated);
     const year = updatedDate.getFullYear();
 
-    const seasonOptions = show.seasons
-        ? Array.from({ length: show.seasons }, (_, index) => (
+    // Step 6: Dropdown for SEASON Selection
+    const seasonOptions = showSeasons
+        ? showSeasons.map((season, index) => (
             <option key={index} value={`season${index + 1}`}>
                 Season {index + 1}
             </option>
         ))
         : null;
 
-    // Step 7: Handle EPISODE Selection
-    const episodeOptions = show.episodes
-        ? show.episodes.map((episode, index) => (
+    // Step 7: Dropdown for EPISODE Selection
+    const episodeOptions = showEpisodes
+        ? showEpisodes.map((episode, index) => (
             <option key={index} value={`episode${index + 1}`}>
-                Episode {index + 1}
+                {episode.title} {/* Display the episode title */}
             </option>
         ))
         : null;
 
-    const handleSeasonChange = (event) => {
-        setSelectedSeason(event.target.value);
-    };
+
+
+
+
 
     // Step 7: Handle EPISODE Selection
     const handleEpisodeChange = (event) => {
@@ -135,11 +171,13 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                             <div>
                                 <label htmlFor="episode">Select an episode:</label>
                                 <select name="episode" className="episode" onChange={handleEpisodeChange}>
+                                    <option value="">Select an episode</option>
                                     {episodeOptions}
                                 </select>
                             </div>
                         )}
                     </div>
+
 
                     <Button onClick={closeDialog} color="primary">
                         Close
