@@ -80,7 +80,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                 description: show.description,
                 seasons: show.seasons,
                 updated: show.updated,
-                genres: show.genres,
+                genres: show.genres.map((genreId) => genreMapping[genreId]),
             };
 
             supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
