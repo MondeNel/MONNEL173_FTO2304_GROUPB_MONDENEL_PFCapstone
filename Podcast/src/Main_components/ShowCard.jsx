@@ -10,7 +10,7 @@ import './Card.css';
 
 import supabase from '../config/supabaseClient';
 
-const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
+const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, image }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(''); // Selected SEASON
     const [selectedEpisode, setSelectedEpisode] = useState(''); // Selected EPISODE
@@ -67,7 +67,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         }
     };
 
-
     const closeDialog = () => {
         setDialogOpen(false);
     };
@@ -76,7 +75,13 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         setIsFavorite(!isFavorite);
         if (!isFavorite) {
             logFavoriteShow(`Added to favorites: ${show.title}`);
-            const favoriteShow = { title: show.title };
+            const favoriteShow = {
+                title: show.title,
+                description: show.description,
+                seasons: show.seasons, // Send the array of season objects
+                updated: show.updated,
+            };
+
             supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
                 if (error) {
                     console.error('Error adding to favorite shows:', error);
@@ -92,7 +97,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         }
     };
 
-    const updatedDate = new Date(show.updated);
+
+    const updatedDate = new Date(show.year);
     const year = updatedDate.getFullYear();
 
     // Step 6: Dropdown for SEASON Selection
@@ -104,21 +110,14 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         ))
         : null;
 
-    // Step 7: Dropdown for EPISODE Selection
     const episodeOptions = showEpisodes
         ? showEpisodes.map((episode, index) => (
             <option key={index} value={`episode${index + 1}`}>
-                {episode.title} {/* Display the episode title */}
+                {episode.title}
             </option>
         ))
         : null;
 
-
-
-
-
-
-    // Step 7: Handle EPISODE Selection
     const handleEpisodeChange = (event) => {
         setSelectedEpisode(event.target.value);
     };
@@ -126,7 +125,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
     return (
         <div className="show__card">
             <img src={show.image} alt={show.title} />
-
             <h2>{show.title}</h2>
 
             <div className="show__align">
@@ -142,7 +140,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 <DialogContent>
                     <p>{show.description}</p>
                     <br />
-                    <h3>Number of Seasons: {show.seasons || 'N/A'}</h3>
+                    <h3>Number of Seasons: {show.seasons.length}</h3>
+
                     <br />
                     <h3>Year: {year}</h3>
                     <br />
@@ -154,9 +153,11 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                                     {genreId === 2 && <HistoryIcon />}
                                     <span>{genreMapping[genreId]}</span>
                                 </div>
+
                             )}
                         </div>
-                    ))}
+                    )
+                    )}
 
                     <div className="dropdowns">
                         {/* Step 6: Dropdown for SEASON Selection */}
@@ -177,7 +178,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                             </div>
                         )}
                     </div>
-
 
                     <Button onClick={closeDialog} color="primary">
                         Close
