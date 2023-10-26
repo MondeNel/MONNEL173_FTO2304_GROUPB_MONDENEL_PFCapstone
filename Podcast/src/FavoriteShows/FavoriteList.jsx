@@ -16,7 +16,7 @@ const FavoriteList = () => {
     const fetchFavoriteShows = async () => {
         const { data, error } = await supabase
             .from('favorite_shows')
-            .select('id, created_at, title, description, seasons, updated');
+            .select('id, created_at, title, description, seasons, updated, genres');
 
         if (error) {
             console.error('Error fetching favorite shows:', error);
