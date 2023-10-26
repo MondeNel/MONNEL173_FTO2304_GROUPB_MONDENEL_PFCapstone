@@ -11,21 +11,34 @@ import './Card.css';
 import supabase from '../config/supabaseClient';
 
 const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
-
     const [isDialogOpen, setDialogOpen] = useState(false);
-    const [selectedSeason, setSelectedSeason] = useState('');
+    const [selectedSeason, setSelectedSeason] = useState(''); // Selected SEASON
+    const [selectedEpisode, setSelectedEpisode] = useState(''); // Selected EPISODE
     const [isFavorite, setIsFavorite] = useState(false);
 
-    const openDialog = () => {
+
+
+    const openDialog = async () => {
+        try {
+            const response = await fetch(`https://podcast-api.netlify.app/id/${show.id}`);
+            if (response.ok) {
+                const data = await response.json();
+                // Process and set the data for SEASONs and EPISODEs here
+            } else {
+                console.error('Error fetching show details:', response.status, response.statusText);
+            }
+        } catch (error) {
+            console.error('Error fetching show details:', error);
+        }
         setDialogOpen(true);
     };
+
 
     const closeDialog = () => {
         setDialogOpen(false);
     };
 
     const toggleFavorite = async () => {
-        // Toggle the favorite state and update the color accordingly
         setIsFavorite(!isFavorite);
         if (!isFavorite) {
             logFavoriteShow(`Added to favorites: ${show.title}`);
@@ -36,7 +49,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 } else {
                     console.log('Added to favorite shows:', data);
                     if (updateFavoriteShows) {
-                        // Call the updateFavoriteShows callback to update the favoriteShows state in FavoriteList
                         updateFavoriteShows([...favoriteShows, favoriteShow]);
                     }
                 }
@@ -57,6 +69,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         ))
         : null;
 
+    // Step 7: Handle EPISODE Selection
     const episodeOptions = show.episodes
         ? show.episodes.map((episode, index) => (
             <option key={index} value={`episode${index + 1}`}>
@@ -67,6 +80,11 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
 
     const handleSeasonChange = (event) => {
         setSelectedSeason(event.target.value);
+    };
+
+    // Step 7: Handle EPISODE Selection
+    const handleEpisodeChange = (event) => {
+        setSelectedEpisode(event.target.value);
     };
 
     return (
@@ -87,41 +105,36 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 <DialogTitle>{show.title}</DialogTitle>
                 <DialogContent>
                     <p>{show.description}</p>
-
                     <br />
-
                     <h3>Number of Seasons: {show.seasons || 'N/A'}</h3>
-
                     <br />
-
                     <h3>Year: {year}</h3>
-
                     <br />
-
                     {show.genres && show.genres.map((genreId) => (
                         <div key={genreId} className="genre">
                             {genreMapping[genreId] && (
-                                <>
+                                <div>
                                     {genreId === 1 && <VideoLibraryIcon />}
                                     {genreId === 2 && <HistoryIcon />}
                                     <span>{genreMapping[genreId]}</span>
-                                </>
+                                </div>
                             )}
                         </div>
                     ))}
 
-
                     <div className="dropdowns">
+                        {/* Step 6: Dropdown for SEASON Selection */}
                         <label htmlFor="season">Select a season:</label>
                         <select name="season" className="season" onChange={handleSeasonChange}>
                             <option value="">Select a season</option>
                             {seasonOptions}
                         </select>
 
+                        {/* Step 7: Dropdown for EPISODE Selection */}
                         {selectedSeason && (
                             <div>
                                 <label htmlFor="episode">Select an episode:</label>
-                                <select name="episode" className="episode">
+                                <select name="episode" className="episode" onChange={handleEpisodeChange}>
                                     {episodeOptions}
                                 </select>
                             </div>

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios'; // Import Axios
 import ShowCard from './ShowCard';
 import './Content.css'
 import Navbar from '../Header_components/Navbar';
-
 
 const Home = ({ selectedShow }) => {
     const [shows, setShows] = useState([]);
@@ -23,17 +23,12 @@ const Home = ({ selectedShow }) => {
         9: "Kids and Family"
     };
 
+    // Step 1: Fetch Data with Axios
     useEffect(() => {
         const apiUrl = 'https://podcast-api.netlify.app/shows';
-        fetch(apiUrl)
+        axios.get(apiUrl)
             .then((response) => {
-                if (!response.ok) {
-                    throw Error(`Fetch error: ${response.status} - ${response.statusText}`);
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setShows(data);
+                setShows(response.data);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
@@ -82,12 +77,13 @@ const Home = ({ selectedShow }) => {
                     </div>
                 )}
                 <div className="grid__container">
+                    {/* Step 3: Map through the shows and display ShowCard components */}
                     {visibleShows.map((show, index) => (
                         <ShowCard
                             key={index}
                             show={show}
                             genreMapping={genreMapping}
-                            logFavoriteShow={logFavoriteShow} // Pass the logFavoriteShow function
+                            logFavoriteShow={logFavoriteShow}
                         />
                     ))}
                 </div>
