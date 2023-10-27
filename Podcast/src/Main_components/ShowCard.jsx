@@ -12,7 +12,6 @@ import './Card.css';
 import supabase from '../config/supabaseClient';
 import VideoPlayerModal from '../VideoPlayer_components/VideoPlayerModal';
 
-
 const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, image }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(''); // Selected SEASON
@@ -26,7 +25,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
     const [isPlaying, setIsPlaying] = useState(false);
 
     const openDialog = async () => {
-
         try {
             const response = await fetch(`https://podcast-api.netlify.app/id/${show.id}`);
             if (response.ok) {
@@ -75,7 +73,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
     };
 
     const toggleFavorite = async (event) => {
-
         setIsFavorite(!isFavorite);
         if (!isFavorite) {
             logFavoriteShow(`Added to favorites: ${show.title}`);
@@ -109,52 +106,18 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
         setIsPlaying(episodeFile);
     }
 
-
-
-
-    const updatedDate = new Date(show.year);
-    const year = updatedDate.getFullYear();
-
-    // Step 6: Dropdown for SEASON Selection
-    const seasonOptions = showSeasons
-        ? showSeasons.map((season, index) => (
-            <option key={index} value={`season${index + 1}`}>
-                Season {index + 1}
-            </option>
-        ))
-        : null;
-
-    const episodeOptions = showEpisodes
-        ? showEpisodes.map((episode, index) => (
-            <option key={index} value={`episode${index + 1}`}>
-                {episode.title}
-            </option>
-        ))
-        : null;
-
-
-    const handleEpisodeChange = (event) => {
-        setSelectedEpisode(event.target.value);
-    };
-
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
     }
 
-
     return (
         <div className="show__card">
             <h2>{show.title}</h2>
             <img src={show.image.toString()} alt={show.title} />
-
-            {/* Display the number of seasons */}
             <p>Number of Seasons: {show.seasons}</p>
-
-            {/* Display the human-readable date for when the show was last updated */}
             <p>Last Updated: {formatDate(show.updated)}</p>
 
-            {/* Display the genre */}
             <div className="genre">
                 {show.genres && Array.isArray(show.genres) && show.genres.map((genreId) => (
                     <div key={genreId}>
@@ -165,11 +128,9 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                 ))}
             </div>
 
-
             <div className="show__align">
                 <button onClick={openDialog}>Show Details</button>
 
-                {/* Play button */}
                 <div className="play-button" onClick={handlePlay}>
                     {isPlaying ? (
                         <span>Playing</span>
@@ -187,44 +148,32 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                 <DialogTitle>{show.title}</DialogTitle>
                 <DialogContent>
                     <p>{show.description}</p>
-                    <br />
-                    <h3>Number of Seasons: {show.seasons}</h3>
-
-                    <br />
-                    <h3>Year: {show.updated}</h3>
-                    <br />
-                    {show.genres && Array.isArray(show.genres) && show.genres.map((genreId) => (
-                        <div key={genreId} className="genre">
-                            {genreMapping[genreId] && (
-                                <div>
-                                    {genreId === 1 && <VideoLibraryIcon />}
-                                    {genreId === 2 && <HistoryIcon />}
-                                    <span>{genreMapping[genreId]}</span>
-                                </div>
-                            )}
-                        </div>
-                    ))}
-
-
                     <div className="dropdowns">
                         {/* Dropdown for SEASON Selection */}
                         <label htmlFor="season">Select a season:</label>
                         <select name="season" className="season" onChange={handleSeasonChange}>
                             <option value="">Select a season</option>
-                            {seasonOptions}
+                            {showSeasons.map((season, index) => (
+                                <option key={index} value={season.title}>
+                                    {season.title}
+                                </option>
+                            ))}
                         </select>
-
-                        {/* Dropdown for EPISODE Selection */}
-                        {selectedSeason && (
-                            <div>
-                                <label htmlFor="episode">Select an episode:</label>
-                                <select name="episode" className="episode" onChange={handleEpisodeChange}>
-                                    <option value="">Select an episode</option>
-                                    {episodeOptions}
-                                </select>
-                            </div>
-                        )}
                     </div>
+
+                    {/* Display episodes for the selected season */}
+                    {showEpisodes.length > 0 && (
+                        <div className="episode-list">
+                            <h3>Episodes:</h3>
+                            <ul>
+                                {showEpisodes.map((episode, index) => (
+                                    <li key={index}>
+                                        <button onClick={() => handlePlay(episode.file)}>{episode.title}</button>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                    )}
 
                     <Button onClick={closeDialog} color="primary">
                         Close
@@ -238,9 +187,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                 onClose={() => setIsPlaying(false)} // Close the video player modal
                 isPlaying={isPlaying} // Control the visibility of the modal
             />
-
-
-        </div >
+        </div>
     );
 };
 
