@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Import Axios
 import ShowCard from './ShowCard';
 import './Content.css'
 import Navbar from '../Header_components/Navbar';
@@ -23,17 +22,25 @@ const Home = ({ selectedShow }) => {
         9: "Kids and Family"
     };
 
-    // Step 1: Fetch Data with Axios
+    // Step 1: Fetch Data with Fetch API
     useEffect(() => {
         const apiUrl = 'https://podcast-api.netlify.app/shows';
-        axios.get(apiUrl)
+
+        fetch(apiUrl)
             .then((response) => {
-                setShows(response.data);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then((data) => {
+                setShows(data);
             })
             .catch((error) => {
                 console.error('Error fetching data:', error);
             });
     }, []);
+
 
     useEffect(() => {
         // Set the number of visible shows based on whether "Show More" is clicked

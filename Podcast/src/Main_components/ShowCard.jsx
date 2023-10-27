@@ -137,11 +137,34 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
         setSelectedEpisode(event.target.value);
     };
 
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
+    }
+
+
     return (
         <div className="show__card">
+            <h2>{show.title}</h2>
             <img src={show.image.toString()} alt={show.title} />
 
-            <h2>{show.title}</h2>
+            {/* Display the number of seasons */}
+            <p>Number of Seasons: {show.seasons}</p>
+
+            {/* Display the human-readable date for when the show was last updated */}
+            <p>Last Updated: {formatDate(show.updated)}</p>
+
+            {/* Display the genre */}
+            <div className="genre">
+                {show.genres && Array.isArray(show.genres) && show.genres.map((genreId) => (
+                    <div key={genreId}>
+                        {genreMapping[genreId] && (
+                            <span>{genreMapping[genreId]}</span>
+                        )}
+                    </div>
+                ))}
+            </div>
+
 
             <div className="show__align">
                 <button onClick={openDialog}>Show Details</button>
