@@ -97,23 +97,3 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
-
-/* Add styles for the video element */
-.dialog video {
-    max-width: 100%;
-}
-
-
-
-/* =========== Play button ============= */
-.play_button {
-    font-size: 35px !important;
-    /* Use !important to ensure this rule takes precedence */
-    color: red;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-.play_button:hover {
-    color: rgb(119, 81, 81);
-}

@@ -10,6 +10,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import './Card.css';
 
 import supabase from '../config/supabaseClient';
+import VideoPlayerModal from '../VideoPlayer_components/VideoPlayerModal';
+
 
 const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, image }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -106,9 +108,9 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
     }
 
     // Handle the Play button click
-    const handlePlay = () => {
-        // You can implement the play functionality here, like opening a video player or a link to play the show.
-        setIsPlaying(true);
+    const handlePlay = (episodeFile) => {
+        // Open the video player modal with the episode's "file" as the video source
+        setIsPlaying(episodeFile);
     }
 
 
@@ -150,7 +152,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                     {isPlaying ? (
                         <span>Playing</span>
                     ) : (
-                        <PlayArrowIcon style={{ fontSize: 30, color: 'blue' }} />
+                        <PlayArrowIcon style={{ fontSize: 35, color: 'red' }} />
                     )}
                 </div>
 
@@ -207,7 +209,16 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                     </Button>
                 </DialogContent>
             </Dialog>
-        </div>
+
+            {/* VideoPlayerModal component */}
+            <VideoPlayerModal
+                videoSource={isPlaying} // Pass the episode's "file" as the video source
+                onClose={() => setIsPlaying(false)} // Close the video player modal
+                isPlaying={isPlaying} // Control the visibility of the modal
+            />
+
+
+        </div >
     );
 };
 
