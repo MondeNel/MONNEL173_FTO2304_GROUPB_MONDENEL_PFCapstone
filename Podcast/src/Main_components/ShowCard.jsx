@@ -6,6 +6,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import './Card.css';
 
 import supabase from '../config/supabaseClient';
@@ -19,8 +20,10 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
     const [showSeasons, setShowSeasons] = useState([]); // To store SEASON data
     const [showEpisodes, setShowEpisodes] = useState([]); // To store EPISODE data
 
-    const openDialog = async () => {
+    // Add state to track whether the video is playing
+    const [isPlaying, setIsPlaying] = useState(false);
 
+    const openDialog = async () => {
 
         try {
             const response = await fetch(`https://podcast-api.netlify.app/id/${show.id}`);
@@ -102,6 +105,12 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
         }
     }
 
+    // Handle the Play button click
+    const handlePlay = () => {
+        // You can implement the play functionality here, like opening a video player or a link to play the show.
+        setIsPlaying(true);
+    }
+
 
 
     const updatedDate = new Date(show.year);
@@ -135,6 +144,15 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
 
             <div className="show__align">
                 <button onClick={openDialog}>Show Details</button>
+
+                {/* Play button */}
+                <div className="play-button" onClick={handlePlay}>
+                    {isPlaying ? (
+                        <span>Playing</span>
+                    ) : (
+                        <PlayArrowIcon style={{ fontSize: 30, color: 'blue' }} />
+                    )}
+                </div>
 
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <FavoriteIcon style={{ color: isFavorite ? 'red' : 'grey' }} />
