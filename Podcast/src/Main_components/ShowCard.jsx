@@ -60,17 +60,13 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
             if (selectedSeasonData) {
                 const episodes = selectedSeasonData.episodes;
                 setShowEpisodes(episodes);
-
-                // Log the selected season and its episodes
-                console.log('Selected Season:', selectedSeasonData);
-                console.log('Episodes:', episodes);
+            } else {
+                // If no season is selected, clear the episodes
+                setShowEpisodes([]);
             }
         } else {
             // If no season is selected, clear the episodes
             setShowEpisodes([]);
-
-            // Log that no season is selected
-            console.log('No Season Selected');
         }
     };
 
@@ -115,6 +111,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
 
 
 
+
     const updatedDate = new Date(show.year);
     const year = updatedDate.getFullYear();
 
@@ -135,13 +132,15 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
         ))
         : null;
 
+
     const handleEpisodeChange = (event) => {
         setSelectedEpisode(event.target.value);
     };
 
     return (
         <div className="show__card">
-            <img src={show.image} alt={show.title} />
+            <img src={show.image.toString()} alt={show.title} />
+
             <h2>{show.title}</h2>
 
             <div className="show__align">
@@ -185,14 +184,14 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
 
 
                     <div className="dropdowns">
-                        {/* Step 6: Dropdown for SEASON Selection */}
+                        {/* Dropdown for SEASON Selection */}
                         <label htmlFor="season">Select a season:</label>
                         <select name="season" className="season" onChange={handleSeasonChange}>
                             <option value="">Select a season</option>
                             {seasonOptions}
                         </select>
 
-                        {/* Step 7: Dropdown for EPISODE Selection */}
+                        {/* Dropdown for EPISODE Selection */}
                         {selectedSeason && (
                             <div>
                                 <label htmlFor="episode">Select an episode:</label>
