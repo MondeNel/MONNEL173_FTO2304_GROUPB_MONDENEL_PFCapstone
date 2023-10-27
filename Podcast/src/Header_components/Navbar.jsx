@@ -40,6 +40,7 @@ const Navbar = () => {
 
     return (
         <div className="navbar" style={navbarStyle}>
+            {/* replace the h1 Podcast with the provided code */}
             <h1>Podcast App</h1>
 
             <div className="navbar__input">
