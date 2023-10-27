@@ -8,3 +8,46 @@
     font-size: 25px;
     margin-left: 10px;
 }
+
+/* Add these styles to your CSS */
+.show-more-button {
+    background-color: #ff0000;
+    /* Change to your preferred color */
+    color: white;
+    padding: 15px 30px;
+    /* Increase padding for a larger button */
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    display: block;
+    /* Make it a block element */
+    margin: 0 auto;
+    /* Center the button horizontally */
+    text-align: center;
+    /* Center text within the button */
+}
+
+.show-more-button:hover {
+    background-color: #b30000;
+    /* Change to your preferred color */
+}
+
+.sort-button {
+    background-color: #007BFF;
+    /* Button background color */
+    color: white;
+    /* Button text color */
+    border: none;
+    padding: 10px 20px;
+    /* Adjust padding as needed */
+    margin: 10px;
+    /* Adjust margin as needed */
+    cursor: pointer;
+    border-radius: 5px;
+    /* Rounded corners for the button */
+}
+
+.sort-button:hover {
+    background-color: #0056b3;
+    /* Hover background color */
+}

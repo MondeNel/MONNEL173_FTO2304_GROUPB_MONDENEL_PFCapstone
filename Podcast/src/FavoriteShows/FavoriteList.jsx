@@ -7,6 +7,8 @@ import supabase from '../config/supabaseClient';
 const FavoriteList = () => {
     const [favoriteShows, setFavoriteShows] = useState([]);
     const [isDataFetched, setIsDataFetched] = useState(false);
+    const [sortAscending, setSortAscending] = useState(true); // For sorting
+    const [showMore, setShowMore] = useState(false); // For showing more
 
     useEffect(() => {
         // Fetch favorite shows when the component mounts
@@ -35,12 +37,39 @@ const FavoriteList = () => {
         setFavoriteShows(updatedShows);
     };
 
+    const toggleSortOrder = () => {
+        setSortAscending((prevSortAscending) => !prevSortAscending);
+    };
+
+    const toggleShowMore = () => {
+        setShowMore((prevShowMore) => !prevShowMore);
+    };
+
+    // Sort the favorite shows based on title
+    const sortedFavoriteShows = favoriteShows.slice().sort((a, b) => {
+        if (sortAscending) {
+            return a.title.localeCompare(b.title);
+        } else {
+            return b.title.localeCompare(a.title);
+        }
+    });
+
+    const visibleFavoriteShows = showMore ? sortedFavoriteShows : sortedFavoriteShows.slice(0, 5);
+
     return (
         <div>
             <h1 className='title'>Favorite Shows</h1>
+
+            <button className='sort-button' onClick={toggleSortOrder}>
+                {sortAscending ? 'Sort Descending' : 'Sort Ascending'}
+            </button>
+
+
+            <br />
+
             <div className="grid_container">
                 {isDataFetched &&
-                    favoriteShows.map((show, index) => (
+                    visibleFavoriteShows.map((show, index) => (
                         <ShowCard
                             key={index}
                             show={show}
@@ -49,6 +78,13 @@ const FavoriteList = () => {
                         />
                     ))}
             </div>
+
+            <br />
+
+            <button className='show-more-button' onClick={toggleShowMore}>
+                {showMore ? 'Show Less' : 'Show More'}
+            </button>
+
         </div>
     );
 };

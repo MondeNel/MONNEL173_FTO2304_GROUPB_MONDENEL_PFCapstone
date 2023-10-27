@@ -20,6 +20,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
     const [showEpisodes, setShowEpisodes] = useState([]); // To store EPISODE data
 
     const openDialog = async () => {
+
+
         try {
             const response = await fetch(`https://podcast-api.netlify.app/id/${show.id}`);
             if (response.ok) {
@@ -71,7 +73,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
         setDialogOpen(false);
     };
 
-    const toggleFavorite = async () => {
+    const toggleFavorite = async (event) => {
+
         setIsFavorite(!isFavorite);
         if (!isFavorite) {
             logFavoriteShow(`Added to favorites: ${show.title}`);
@@ -97,7 +100,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
         } else {
             logFavoriteShow(`Removed from favorites: ${show.title}`);
         }
-    };
+    }
+
 
 
     const updatedDate = new Date(show.year);
@@ -142,10 +146,10 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
                 <DialogContent>
                     <p>{show.description}</p>
                     <br />
-                    <h3>Number of Seasons: {show.seasons.length}</h3>
+                    <h3>Number of Seasons: {show.seasons}</h3>
 
                     <br />
-                    <h3>Year: {year}</h3>
+                    <h3>Year: {show.updated}</h3>
                     <br />
                     {show.genres && Array.isArray(show.genres) && show.genres.map((genreId) => (
                         <div key={genreId} className="genre">
