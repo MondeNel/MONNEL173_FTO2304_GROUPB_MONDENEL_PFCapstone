@@ -1,15 +1,15 @@
 .grid_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-
 }
+
+/* Existing styles */
 
 .title {
     font-size: 25px;
     margin-left: 10px;
 }
 
-/* Add these styles to your CSS */
 .show-more-button {
     background-color: #ff0000;
     /* Change to your preferred color */
@@ -20,11 +20,8 @@
     cursor: pointer;
     font-size: 16px;
     display: block;
-    /* Make it a block element */
     margin: 0 auto;
-    /* Center the button horizontally */
     text-align: center;
-    /* Center text within the button */
 }
 
 .show-more-button:hover {
@@ -34,20 +31,32 @@
 
 .sort-button {
     background-color: #007BFF;
-    /* Button background color */
     color: white;
-    /* Button text color */
     border: none;
     padding: 10px 20px;
-    /* Adjust padding as needed */
     margin: 10px;
-    /* Adjust margin as needed */
     cursor: pointer;
     border-radius: 5px;
-    /* Rounded corners for the button */
 }
 
 .sort-button:hover {
     background-color: #0056b3;
-    /* Hover background color */
+}
+
+/* Center the loading circle */
+.loading-spinner-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    /* Set the height of the container to 100% of the viewport height */
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    /* Add a semi-transparent background overlay */
+    z-index: 999;
+    /* Ensure the overlay is on top of other content */
 }

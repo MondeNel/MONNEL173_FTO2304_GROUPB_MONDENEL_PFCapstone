@@ -1,18 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Favorite.css';
 import ShowCard from '../Main_components/ShowCard';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import supabase from '../config/supabaseClient';
 
 const FavoriteList = () => {
     const [favoriteShows, setFavoriteShows] = useState([]);
-    const [isDataFetched, setIsDataFetched] = useState(false);
-    const [sortAscending, setSortAscending] = useState(true); // For sorting
-    const [showMore, setShowMore] = useState(false); // For showing more
+    const [loading, setLoading] = useState(true);
+    const [sortAscending, setSortAscending] = useState(true);
+    const [showMore, setShowMore] = useState(false);
 
     useEffect(() => {
-        // Fetch favorite shows when the component mounts
-        fetchFavoriteShows();
+        setTimeout(() => {
+            fetchFavoriteShows();
+        }, 1000); // Delay for 1 second before loading data
     }, []);
 
     const fetchFavoriteShows = async () => {
@@ -23,13 +25,12 @@ const FavoriteList = () => {
         if (error) {
             console.error('Error fetching favorite shows:', error);
         } else {
-            // Parse the "seasons" field from JSON string to array
             const favoriteShows = data.map((show) => ({
                 ...show,
                 seasons: JSON.parse(show.seasons),
             }));
             setFavoriteShows(favoriteShows);
-            setIsDataFetched(true); // Set data fetch flag to true
+            setLoading(false);
         }
     };
 
@@ -45,7 +46,6 @@ const FavoriteList = () => {
         setShowMore((prevShowMore) => !prevShowMore);
     };
 
-    // Sort the favorite shows based on title
     const sortedFavoriteShows = favoriteShows.slice().sort((a, b) => {
         if (sortAscending) {
             return a.title.localeCompare(b.title);
@@ -64,27 +64,30 @@ const FavoriteList = () => {
                 {sortAscending ? 'Sort Descending' : 'Sort Ascending'}
             </button>
 
-
             <br />
 
-            <div className="grid_container">
-                {isDataFetched &&
-                    visibleFavoriteShows.map((show, index) => (
+            {loading ? ( // Render loading spinner while loading is true
+                <div className="loading-spinner-container">
+                    <CircularProgress size={80} />
+                </div>
+            ) : (
+                <div className="grid_container">
+                    {visibleFavoriteShows.map((show, index) => (
                         <ShowCard
                             key={index}
                             show={show}
                             image={show.image}
                             updateFavoriteShows={updateFavoriteShows}
                         />
-                    ))}
-            </div>
+                    ))} {/* Add this closing parenthesis */}
+                </div>
+            )}
 
             <br />
 
             <button className='show-more-button' onClick={toggleShowMore}>
                 {showMore ? 'Show Less' : 'Show More'}
             </button>
-
         </div>
     );
 };
