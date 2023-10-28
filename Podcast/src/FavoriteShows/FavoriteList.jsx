@@ -79,7 +79,7 @@ const FavoriteList = () => {
                             image={show.image}
                             updateFavoriteShows={updateFavoriteShows}
                         />
-                    ))} {/* Add this closing parenthesis */}
+                    ))}
                 </div>
             )}
 

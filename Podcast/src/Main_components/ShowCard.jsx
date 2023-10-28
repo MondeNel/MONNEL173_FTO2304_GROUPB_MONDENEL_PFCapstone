@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import VideoLibraryIcon from '@mui/icons-material/VideoLibrary';
-import HistoryIcon from '@mui/icons-material/History';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Card.css';
 
 import supabase from '../config/supabaseClient';
 import VideoPlayerModal from '../VideoPlayer_components/VideoPlayerModal';
 
-const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, image }) => {
+const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(''); // Selected SEASON
     const [selectedEpisode, setSelectedEpisode] = useState(''); // Selected EPISODE
@@ -102,7 +100,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
 
     // Handle the Play button click
     const handlePlay = (episodeFile) => {
-        // Open the video player modal with the episode's "file" as the video source
+        // Open the video player modal with the episode's "file" as the audio source
         setIsPlaying(episodeFile);
     }
 
@@ -183,8 +181,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows, im
 
             {/* VideoPlayerModal component */}
             <VideoPlayerModal
-                videoSource={isPlaying} // Pass the episode's "file" as the video source
-                onClose={() => setIsPlaying(false)} // Close the video player modal
+                videoSource={isPlaying} // Pass the episode's "file" as the audio source
+                onClose={() => setIsPlaying(false)} // Close the audio player modal
                 isPlaying={isPlaying} // Control the visibility of the modal
             />
         </div>
