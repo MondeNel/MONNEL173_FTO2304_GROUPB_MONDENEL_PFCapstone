@@ -1,28 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import './Navbar.css';
 import { Link } from 'react-router-dom';
 import Search from './Search';
-
-import supabase from '../config/supabaseClient';
 import { useNavigate } from 'react-router';
 
+/**
+ * Navbar component for the podcast app.
+ */
 const Navbar = () => {
-    const [user, setUser] = useState({});
     const navigate = useNavigate();
 
-    useEffect(() => {
-        async function getUserData() {
-            const { data, error } = await supabase.auth.user();
-            if (data) {
-                console.log(data);
-                setUser(data);
-            }
-        }
-        getUserData();
-    }, []);
-
-    const signOutUser = async () => {
-        await supabase.auth.signOut();
+    /**
+     * Sign out the user and navigate to the sign-up page.
+     */
+    const signOutUser = () => {
+        // Assuming you have a route for the sign-up page, you can navigate the user there.
         navigate('/');
     };
 
@@ -50,6 +42,7 @@ const Navbar = () => {
                 <button className="dropbtn">Menu</button>
                 <div className="dropdown-content">
                     <Link to="/favoriteList" className="link-button">Favorite Shows</Link>
+                    {/* You can add a button to log out the user directly in the favorite shows dropdown. */}
                     <button onClick={signOutUser} className="log-out-button">Log Out</button>
                 </div>
             </div>
