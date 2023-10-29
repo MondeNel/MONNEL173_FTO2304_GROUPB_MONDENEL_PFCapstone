@@ -91,6 +91,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 updated: show.updated,
                 genres: show.genres.map((genreId) => genreMapping[genreId]),
                 image: show.image,
+                added_at: new Date(),
             };
 
             supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
@@ -187,10 +188,11 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
 
             {/* AudioPlayer component */}
             <AudioPlayer
-                audioSource={selectedEpisodeAudio}
+                episode={{ file: selectedEpisodeAudio }}
                 isPlaying={isAudioPlaying}
                 onClose={() => setIsAudioPlaying(false)}
             />
+
 
             <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
                 <DialogTitle>Episode Player</DialogTitle>

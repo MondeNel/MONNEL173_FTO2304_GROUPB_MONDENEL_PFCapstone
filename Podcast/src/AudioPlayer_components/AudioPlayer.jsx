@@ -4,8 +4,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
-
-const AudioPlayer = ({ audioSource, isPlaying, onClose }) => {
+const AudioPlayer = ({ episode, isPlaying, onClose }) => {
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
     // Handle Play button click for audio
@@ -21,10 +20,10 @@ const AudioPlayer = ({ audioSource, isPlaying, onClose }) => {
     return (
         <div>
             <Dialog open={isAudioPlaying} onClose={handleAudioClose}>
-                <DialogTitle>Audio Player</DialogTitle>
+                <DialogTitle>Episode Player</DialogTitle>
                 <DialogContent>
                     <audio controls>
-                        <source src={audioSource} type="audio/mpeg" />
+                        <source src={episode.file} type="audio/mpeg" />
                         Your browser does not support the audio element.
                     </audio>
 
