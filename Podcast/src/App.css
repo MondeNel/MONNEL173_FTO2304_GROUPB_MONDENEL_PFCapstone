@@ -28,3 +28,21 @@ h1 {
   -webkit-text-fill-color: transparent;
   width: fit-content;
 }
+
+/* Center the loading circle */
+.loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  /* Set the height of the container to 100% of the viewport height */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  /* Add a semi-transparent background overlay */
+  z-index: 999;
+  /* Ensure the overlay is on top of other content */
+}

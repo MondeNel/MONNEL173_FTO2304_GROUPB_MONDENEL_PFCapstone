@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import ShowCard from './ShowCard';
-import './Content.css'
+import './Content.css';
 import Navbar from '../Header_components/Navbar';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const Home = ({ selectedShow }) => {
     const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);
     const [showMore, setShowMore] = useState(false);
     const [sortAscending, setSortAscending] = useState(true);
+    const [loading, setLoading] = useState(true);
 
     // Define the mapping between GENRE ids and titles
     const genreMapping = {
@@ -26,21 +28,28 @@ const Home = ({ selectedShow }) => {
     useEffect(() => {
         const apiUrl = 'https://podcast-api.netlify.app/shows';
 
-        fetch(apiUrl)
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setShows(data);
-            })
-            .catch((error) => {
-                console.error('Error fetching data:', error);
-            });
-    }, []);
+        // Simulate loading for 1 second
+        const loadingTimeout = setTimeout(() => {
+            fetch(apiUrl)
+                .then((response) => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then((data) => {
+                    setShows(data);
+                    setLoading(false); // Set loading to false when data is fetched
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+                    setLoading(false); // Set loading to false on error
+                });
+        }, 2000);
 
+        // Clear the timeout if the component unmounts before the timeout completes
+        return () => clearTimeout(loadingTimeout);
+    }, []);
 
     useEffect(() => {
         // Set the number of visible shows based on whether "Show More" is clicked
@@ -69,35 +78,42 @@ const Home = ({ selectedShow }) => {
 
     return (
         <div className="container">
-            <div className="main__content">
-                <Navbar />
-                <h2>Shows to Listen and Watch</h2>
-                <button onClick={toggleSortOrder} className="sort-button">
-                    Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
-                </button>
-                {selectedShow && (
-                    <div className="selected-show">
-                        <h2>Selected Show</h2>
-                        <h3>{selectedShow.title}</h3>
-                        <img src={selectedShow.image} alt={selectedShow.title} />
-                        <p>{selectedShow.description}</p>
-                    </div>
-                )}
-                <div className="grid__container">
-                    {/* Step 3: Map through the shows and display ShowCard components */}
-                    {visibleShows.map((show, index) => (
-                        <ShowCard
-                            key={index}
-                            show={show}
-                            genreMapping={genreMapping}
-                            logFavoriteShow={logFavoriteShow}
-                        />
-                    ))}
+            {loading ? ( // Display loading spinner while loading
+                <div className="loading-container">
+                    <CircularProgress />
                 </div>
-                <button onClick={toggleShowMore} className="show-more-button">
-                    {showMore ? 'Show Less' : 'Show More'}
-                </button>
-            </div>
+            ) : (
+                <div className="main__content">
+                    <Navbar />
+                    <h2>Shows to Listen and Watch</h2>
+                    <button onClick={toggleSortOrder} className="sort-button">
+                        Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
+                    </button>
+                    {selectedShow && (
+                        <div className="selected-show">
+                            <h2>Selected Show</h2>
+                            <h3>{selectedShow.title}</h3>
+                            <img src={selectedShow.image} alt={selectedShow.title} />
+                            <p>{selectedShow.description}</p>
+                        </div>
+                    )}
+                    <div className="grid__container">
+                        {/* Step 3: Map through the shows and display ShowCard components */}
+                        {visibleShows.map((show, index) => (
+                            <ShowCard
+                                key={index}
+                                show={show}
+                                genreMapping={genreMapping}
+                                logFavoriteShow={logFavoriteShow}
+                            />
+                        )
+                        )}
+                    </div>
+                    <button onClick={toggleShowMore} className="show-more-button">
+                        {showMore ? 'Show Less' : 'Show More'}
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

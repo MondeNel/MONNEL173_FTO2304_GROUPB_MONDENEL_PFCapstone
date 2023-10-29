@@ -19,9 +19,8 @@ const App = () => {
 
     <Routes>
       <Route path="/" element={<SignUp />} /> {/* Renders the Home component at the root path. */}
-
       <Route path="/home" element={<Home />} /> {/* Renders the SignUp component at /app/signup. */}
-      <Route path="/favoriteList" element={<FavoriteList />} /> {/* Renders the Search component at /app/search. */}
+      <Route path="/favoriteList" element={<FavoriteList />} /> {/* Renders FavoriteList component at /app/search. */}
     </Routes>
 
   );

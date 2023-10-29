@@ -68,7 +68,7 @@ const FavoriteList = () => {
 
             {loading ? ( // Render loading spinner while loading is true
                 <div className="loading-spinner-container">
-                    <CircularProgress size={80} />
+                    <CircularProgress size={50} />
                 </div>
             ) : (
                 <div className="grid_container">
