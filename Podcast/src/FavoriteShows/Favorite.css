@@ -3,8 +3,6 @@
     grid-template-columns: repeat(3, 1fr);
 }
 
-/* Existing styles */
-
 .title {
     font-size: 25px;
     margin-left: 10px;
@@ -59,4 +57,11 @@
     /* Add a semi-transparent background overlay */
     z-index: 999;
     /* Ensure the overlay is on top of other content */
+}
+
+/* Delete icon */
+.delete-icon {
+    color: grey;
+    margin-left: 25px;
+    cursor: pointer;
 }

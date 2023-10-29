@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Favorite.css';
 import ShowCard from '../Main_components/ShowCard';
 import CircularProgress from '@mui/material/CircularProgress';
+import DeleteIcon from '@mui/icons-material/Delete'; // Step 1: Import DeleteIcon
 
 import supabase from '../config/supabaseClient';
 
@@ -46,6 +47,22 @@ const FavoriteList = () => {
         setShowMore((prevShowMore) => !prevShowMore);
     };
 
+    const handleRemoveFavoriteShow = async (showId) => {
+        // Remove the show from the database
+        const { data, error } = await supabase
+            .from('favorite_shows')
+            .delete()
+            .eq('id', showId);
+
+        if (error) {
+            console.error('Error removing favorite show:', error);
+        } else {
+            // Filter out the removed show from the state
+            const updatedShows = favoriteShows.filter((show) => show.id !== showId);
+            updateFavoriteShows(updatedShows);
+        }
+    };
+
     const sortedFavoriteShows = favoriteShows.slice().sort((a, b) => {
         if (sortAscending) {
             return a.title.localeCompare(b.title);
@@ -73,12 +90,17 @@ const FavoriteList = () => {
             ) : (
                 <div className="grid_container">
                     {visibleFavoriteShows.map((show, index) => (
-                        <ShowCard
-                            key={index}
-                            show={show}
-                            image={show.image}
-                            updateFavoriteShows={updateFavoriteShows}
-                        />
+                        <div key={show.id}>
+                            <ShowCard
+                                show={show}
+                                image={show.image}
+                                updateFavoriteShows={updateFavoriteShows}
+                            />
+                            <DeleteIcon
+                                onClick={() => handleRemoveFavoriteShow(show.id)} // Step 5: Handle removal on DeleteIcon click
+                                className="delete-icon"
+                            />
+                        </div>
                     ))}
                 </div>
             )}
