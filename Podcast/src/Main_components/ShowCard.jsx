@@ -8,7 +8,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Card.css';
 
 import supabase from '../config/supabaseClient';
-import VideoPlayerModal from '../VideoPlayer_components/VideoPlayerModal';
+import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
 
 const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
@@ -19,8 +19,18 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
     const [showSeasons, setShowSeasons] = useState([]); // To store SEASON data
     const [showEpisodes, setShowEpisodes] = useState([]); // To store EPISODE data
 
-    // Add state to track whether the video is playing
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+    const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
+
+    const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState(false);
+    const [selectedEpisodeFile, setSelectedEpisodeFile] = useState('');
+
+
+    // Handle the Play button click
+    const handlePlay = (episodeFile) => {
+        setSelectedEpisodeFile(episodeFile);
+        setIsEpisodeModalOpen(true);
+    }
 
     const openDialog = async () => {
         try {
@@ -81,7 +91,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 updated: show.updated,
                 genres: show.genres.map((genreId) => genreMapping[genreId]),
                 image: show.image,
-                added_at: new Date(),
             };
 
             supabase.from('favorite_shows').upsert([favoriteShow]).then(({ data, error }) => {
@@ -99,11 +108,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         }
     }
 
-    // Handle the Play button click
-    const handlePlay = (episodeFile) => {
-        // Open the video player modal with the episode's "file" as the audio source
-        setIsPlaying(episodeFile);
-    }
 
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
@@ -131,12 +135,13 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 <button onClick={openDialog}>Show Details</button>
 
                 <div className="play-button" onClick={handlePlay}>
-                    {isPlaying ? (
+                    {isAudioPlaying ? ( // Change isPlaying to isAudioPlaying
                         <span>Playing</span>
                     ) : (
                         <PlayArrowIcon style={{ fontSize: 35, color: 'red' }} />
                     )}
                 </div>
+
 
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <FavoriteIcon style={{ color: isFavorite ? 'red' : 'grey' }} />
@@ -180,12 +185,26 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 </DialogContent>
             </Dialog>
 
-            {/* VideoPlayerModal component */}
-            <VideoPlayerModal
-                videoSource={isPlaying} // Pass the episode's "file" as the audio source
-                onClose={() => setIsPlaying(false)} // Close the audio player modal
-                isPlaying={isPlaying} // Control the visibility of the modal
+            {/* AudioPlayer component */}
+            <AudioPlayer
+                audioSource={selectedEpisodeAudio}
+                isPlaying={isAudioPlaying}
+                onClose={() => setIsAudioPlaying(false)}
             />
+
+            <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
+                <DialogTitle>Episode Player</DialogTitle>
+                <DialogContent>
+                    <audio controls>
+                        <source src={selectedEpisodeFile} type="audio/mpeg" />
+                        Your browser does not support the audio element.
+                    </audio>
+                    <Button onClick={() => setIsEpisodeModalOpen(false)} color="primary">
+                        Close
+                    </Button>
+                </DialogContent>
+            </Dialog>
+
         </div>
     );
 };
