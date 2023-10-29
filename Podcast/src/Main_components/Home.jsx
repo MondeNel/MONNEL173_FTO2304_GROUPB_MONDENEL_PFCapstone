@@ -72,6 +72,18 @@ const Home = ({ selectedShow }) => {
         setSortAscending((prevSortAscending) => !prevSortAscending);
     };
 
+    const sortShowsByDate = () => {
+        const sorted = shows.slice().sort((a, b) => {
+            if (sortAscending) {
+                return new Date(a.date) - new Date(b.date);
+            } else {
+                return new Date(b.date) - new Date(a.date);
+            }
+        });
+        setShows(sorted);
+    };
+
+
     const logFavoriteShow = (message) => {
         console.log(message);
     };
@@ -88,6 +100,9 @@ const Home = ({ selectedShow }) => {
                     <h2>Shows to Listen and Watch</h2>
                     <button onClick={toggleSortOrder} className="sort-button">
                         Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
+                    </button>
+                    <button onClick={sortShowsByDate} className="sort-button">
+                        Sort by Date {sortAscending ? 'Ascending' : 'Descending'}
                     </button>
                     {selectedShow && (
                         <div className="selected-show">

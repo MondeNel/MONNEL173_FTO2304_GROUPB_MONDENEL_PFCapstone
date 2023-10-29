@@ -21,7 +21,7 @@ const FavoriteList = () => {
     const fetchFavoriteShows = async () => {
         const { data, error } = await supabase
             .from('favorite_shows')
-            .select('id, created_at, title, description, seasons, updated, genres, image');
+            .select('id, created_at, title, description, seasons, updated, genres, image, added_at');
 
         if (error) {
             console.error('Error fetching favorite shows:', error);
@@ -73,6 +73,13 @@ const FavoriteList = () => {
 
     const visibleFavoriteShows = showMore ? sortedFavoriteShows : sortedFavoriteShows.slice(0, 5);
 
+    function formatDateTime(dateTimeString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        return new Date(dateTimeString).toLocaleDateString(undefined, options);
+    }
+
+
+
     return (
         <div>
             <h1 className='title'>Favorite Shows</h1>
@@ -97,12 +104,15 @@ const FavoriteList = () => {
                                 updateFavoriteShows={updateFavoriteShows}
                             />
                             <DeleteIcon
-                                onClick={() => handleRemoveFavoriteShow(show.id)} // Step 5: Handle removal on DeleteIcon click
+                                onClick={() => handleRemoveFavoriteShow(show.id)}
                                 className="delete-icon"
                             />
+                            <p className='date_time'>Added on: {formatDateTime(show.added_at)}</p>
+
                         </div>
                     ))}
                 </div>
+
             )}
 
             <br />

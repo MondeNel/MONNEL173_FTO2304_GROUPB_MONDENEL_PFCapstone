@@ -65,3 +65,11 @@
     margin-left: 25px;
     cursor: pointer;
 }
+
+/* Date and Time */
+.date_time {
+    margin-left: 25px;
+    font-size: small;
+    font-weight: bold;
+    margin-top: 10px;
+}
