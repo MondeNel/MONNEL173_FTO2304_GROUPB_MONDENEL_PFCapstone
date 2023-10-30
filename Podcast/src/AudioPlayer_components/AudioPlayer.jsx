@@ -4,14 +4,28 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Button from '@mui/material/Button';
 
+/**
+ * AudioPlayer component for playing audio episodes.
+ *
+ * @param {Object} props - The component's props.
+ * @param {Object} props.episode - The episode data to be played.
+ * @param {boolean} props.isPlaying - Indicates if the audio is currently playing.
+ * @param {Function} props.onClose - Function to close the audio player dialog.
+ * @returns {JSX.Element} The AudioPlayer component JSX.
+ */
 const AudioPlayer = ({ episode, isPlaying, onClose }) => {
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
 
-    // Handle Play button click for audio
+    /**
+     * Handles the Play button click for audio playback.
+     */
     const handleAudioPlay = () => {
         setIsAudioPlaying(true);
     };
 
+    /**
+     * Handles closing the audio player dialog and stopping audio playback.
+     */
     const handleAudioClose = () => {
         setIsAudioPlaying(false);
         onClose();

@@ -10,6 +10,16 @@ import './Card.css';
 import supabase from '../config/supabaseClient';
 import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
 
+/**
+ * ShowCard component displays information about a show and allows interactions with it.
+ *
+ * @param {Object} props - The component's properties.
+ * @param {Object} props.show - The show data to be displayed.
+ * @param {Object} props.genreMapping - A mapping of genre IDs to their names.
+ * @param {Function} props.logFavoriteShow - Callback to log favorite show actions.
+ * @param {Function} props.updateFavoriteShows - Callback to update the list of favorite shows.
+ * @returns {JSX.Element} The ShowCard component JSX.
+ */
 const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
     const [isDialogOpen, setDialogOpen] = useState(false);
     const [selectedSeason, setSelectedSeason] = useState(''); // Selected SEASON
@@ -24,7 +34,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
 
     const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState(false);
     const [selectedEpisodeFile, setSelectedEpisodeFile] = useState('');
-
 
     // Handle the Play button click
     const handlePlay = (episodeFile) => {
@@ -109,7 +118,12 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         }
     }
 
-
+    /**
+     * Format a date string into a human-readable date.
+     *
+     * @param {string} dateString - The date string to format.
+     * @returns {string} The formatted date.
+     */
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -142,7 +156,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                         <PlayArrowIcon style={{ fontSize: 35, color: 'red' }} />
                     )}
                 </div>
-
 
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <FavoriteIcon style={{ color: isFavorite ? 'red' : 'grey' }} />
@@ -193,7 +206,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 onClose={() => setIsAudioPlaying(false)}
             />
 
-
             <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
                 <DialogTitle>Episode Player</DialogTitle>
                 <DialogContent>
@@ -206,7 +218,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                     </Button>
                 </DialogContent>
             </Dialog>
-
         </div>
     );
 };

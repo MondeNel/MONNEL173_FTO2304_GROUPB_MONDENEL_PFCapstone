@@ -5,12 +5,22 @@ import './Navbar.css';
 
 const API_URL = 'https://podcast-api.netlify.app/shows';
 
+/**
+ * Search component for searching and displaying search results.
+ *
+ * @returns {JSX.Element} The Search component JSX.
+ */
 const Search = () => {
     const [input, setInput] = useState('');
     const [filteredData, setFilteredData] = useState([]);
     const [showResults, setShowResults] = useState(false);
     const [selectedShow, setSelectedShow] = useState(null);
 
+    /**
+     * Opens the results dialog when a search result is clicked.
+     *
+     * @param {Object} show - The selected show data.
+     */
     const openResultsDialog = (show) => {
         setSelectedShow(show);
         setShowResults(false);
@@ -24,12 +34,22 @@ const Search = () => {
         };
     }, []);
 
+    /**
+     * Handles clicks outside the input wrapper to close the results dialog.
+     *
+     * @param {Event} event - The click event.
+     */
     const handleDocumentClick = (event) => {
         if (!document.querySelector('.input__wrapper').contains(event.target)) {
             setShowResults(false);
         }
     };
 
+    /**
+     * Fetches data based on the search value and sets the filtered data.
+     *
+     * @param {string} value - The search value.
+     */
     const fetchData = (value) => {
         fetch(API_URL)
             .then((response) => {
@@ -53,6 +73,11 @@ const Search = () => {
 
     let searchTimeout;
 
+    /**
+     * Handles input changes, triggers search, and sets a timeout.
+     *
+     * @param {string} value - The input value.
+     */
     const handleChange = (value) => {
         setInput(value);
 
@@ -91,7 +116,6 @@ const Search = () => {
             {selectedShow && (
                 <SearchResultsDialog show={selectedShow} onClose={() => setSelectedShow(null)} />
             )}
-
         </div>
     );
 };

@@ -4,6 +4,13 @@ import './Content.css';
 import Navbar from '../Header_components/Navbar';
 import CircularProgress from '@mui/material/CircularProgress';
 
+/**
+ * Home component for displaying a list of shows and their details.
+ *
+ * @param {Object} props - The component's properties.
+ * @param {Object} props.selectedShow - The selected show to display additional details.
+ * @returns {JSX.Element} The Home component JSX.
+ */
 const Home = ({ selectedShow }) => {
     const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);
@@ -28,7 +35,7 @@ const Home = ({ selectedShow }) => {
     useEffect(() => {
         const apiUrl = 'https://podcast-api.netlify.app/shows';
 
-        // Simulate loading for 1 second
+        // Simulate loading for 2 seconds
         const loadingTimeout = setTimeout(() => {
             fetch(apiUrl)
                 .then((response) => {
@@ -82,7 +89,6 @@ const Home = ({ selectedShow }) => {
         });
         setShows(sorted);
     };
-
 
     const logFavoriteShow = (message) => {
         console.log(message);
