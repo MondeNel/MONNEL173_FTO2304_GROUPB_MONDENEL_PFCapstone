@@ -29,6 +29,12 @@ h1 {
   width: fit-content;
 }
 
+h2 {
+  font-size: 25px;
+  margin-left: 10px;
+  margin-bottom: 15px;
+}
+
 /* Center the loading circle */
 .loading-container {
   display: flex;

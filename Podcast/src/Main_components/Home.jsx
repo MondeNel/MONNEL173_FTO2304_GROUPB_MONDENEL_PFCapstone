@@ -103,7 +103,7 @@ const Home = ({ selectedShow }) => {
             ) : (
                 <div className="main__content">
                     <Navbar />
-                    <h2>Shows to Listen and Watch</h2>
+                    <h2>Shows to Listen </h2>
                     <button onClick={toggleSortOrder} className="sort-button">
                         Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
                     </button>
