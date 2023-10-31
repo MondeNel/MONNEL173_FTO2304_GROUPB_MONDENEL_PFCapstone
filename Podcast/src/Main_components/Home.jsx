@@ -52,7 +52,7 @@ const Home = ({ selectedShow }) => {
                     console.error('Error fetching data:', error);
                     setLoading(false); // Set loading to false on error
                 });
-        }, 2000);
+        }, 4000);
 
         // Clear the timeout if the component unmounts before the timeout completes
         return () => clearTimeout(loadingTimeout);
