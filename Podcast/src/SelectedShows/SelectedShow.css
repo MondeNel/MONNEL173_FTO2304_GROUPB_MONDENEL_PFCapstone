@@ -15,3 +15,68 @@
     /* Adjust the font size as needed */
     margin: 10px 0;
 }
+
+/* SelectedShow.css */
+
+/* Style the episode dropdown container */
+.episode-dropdown {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+/* Style each episode entry in the dropdown */
+.episode-entry {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    /* Adjust the spacing between episodes as needed */
+}
+
+/* Style the episode image */
+.episode-image {
+    width: 50px;
+    /* Adjust the image width as needed */
+    height: 50px;
+    /* Adjust the image height as needed */
+    margin-right: 10px;
+    /* Adjust the spacing between the image and title as needed */
+}
+
+/* Style the episode title */
+.episode-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* SelectedShow.css */
+
+/* Style the episode dropdown container */
+.episode-dropdown {
+    display: flex;
+    flex-direction: column;
+    /* Display episodes in a column */
+}
+
+/* Style each episode entry in the dropdown */
+.episode-entry {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    /* Adjust the spacing between episodes as needed */
+}
+
+/* Style the episode image */
+.episode-image {
+    width: 50px;
+    /* Adjust the image width as needed */
+    height: 50px;
+    /* Adjust the image height as needed */
+    margin-right: 10px;
+    /* Adjust the spacing between the image and title as needed */
+}
+
+/* Style the episode title */
+.episode-title {
+    font-size: 16px;
+    font-weight: bold;
+}

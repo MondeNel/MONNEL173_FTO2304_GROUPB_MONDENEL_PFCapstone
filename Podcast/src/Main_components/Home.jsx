@@ -120,17 +120,25 @@ const Home = ({ selectedShow }) => {
                     <button onClick={toggleSortOrder} className="sort-button">
                         Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
                     </button>
+
+
                     <button onClick={sortShowsByDate} className="sort-button">
                         Sort by Date {sortAscending ? 'Ascending' : 'Descending'}
                     </button>
+
+
                     {selectedShow && (
                         <div className="selected-show">
                             <h2>Selected Show</h2>
                             <h3>{selectedShow.title}</h3>
                             <img src={selectedShow.image} alt={selectedShow.title} />
                             <p>{selectedShow.description}</p>
+                            {/* add the seasons dropdown */}
+                            {/* add the episodes dropdown */}
                         </div>
                     )}
+
+
                     <div className="grid__container">
                         {/* Step 3: Map through the shows and display ShowCard components */}
                         {visibleShows.map((show, index) => (

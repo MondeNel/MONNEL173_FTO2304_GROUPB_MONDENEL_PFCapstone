@@ -1,49 +1,62 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './SelectedShow.css'; // Import a CSS file for styling
-
 import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
 
-const SelectedShow = () => {
-    // Access the location to get the state
+const SelectedShow = ({ show }) => {
+    console.log(show);
     const location = useLocation();
     const selectedShow = location.state?.selectedShow || null;
-
-    // Define a state for the selected season
     const [selectedSeason, setSelectedSeason] = useState('');
-    // Define a state to store the selected season's episodes
     const [selectedSeasonEpisodes, setSelectedSeasonEpisodes] = useState([]);
-
-    // Define a state to control the visibility of the episode player
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
-
-    // Use the useNavigate hook to get the navigation function
     const navigate = useNavigate();
 
-
-    // Define the handleSeasonChange function
     const handleSeasonChange = (event) => {
         const selectedSeasonValue = event.target.value;
         setSelectedSeason(selectedSeasonValue);
-
-        if (selectedShow && Array.isArray(selectedShow.seasons)) {
-            const selectedSeasonData = selectedShow.seasons.find((season) => season.title === selectedSeasonValue);
-            setSelectedSeasonEpisodes(selectedSeasonData ? selectedSeasonData.episodes : []);
-        }
+        // Clear the selected episodes when changing the season
+        setSelectedSeasonEpisodes([]);
     };
 
-    // Function to handle the play button click and open the episode player
     const handlePlay = (episodeFile) => {
         setSelectedEpisodeAudio(episodeFile);
         setIsAudioPlaying(true);
     };
 
-    // Function to navigate back to the '/home' page
     const goBackToHome = () => {
         navigate('/home');
     };
 
+    useEffect(() => {
+        // Fetch season data when the selected season changes
+        const fetchSeasonData = async () => {
+            if (selectedShow && selectedShow.id && selectedSeason) {
+                try {
+                    const response = await fetch(`https://podcast-api.netlify.app/id/${selectedShow.id}`);
+                    if (response.ok) {
+                        const data = await response.json();
+                        const selectedShowSeasons = data.seasons;
+                        const selectedSeasonData = selectedShowSeasons.find((season) => season.title === selectedSeason);
+                        setSelectedSeasonEpisodes(selectedSeasonData ? selectedSeasonData.episodes : []);
+                    } else {
+                        console.error('Error fetching show details:', response.status, response.statusText);
+                    }
+                } catch (error) {
+                    console.error('Error fetching show details:', error);
+                }
+            }
+        };
+
+        fetchSeasonData();
+    }, [selectedShow, selectedSeason]);
+
+    console.log('selectedSeasonEpisodes:', selectedSeasonEpisodes);
+
+    console.log('selectedSeason:', selectedSeason);
+
+    console.log('selectedShow.id:', selectedShow.id);
 
     return (
         <div className="selected-show-container">
@@ -51,15 +64,14 @@ const SelectedShow = () => {
                 <div>
                     <h2>{selectedShow.title}</h2>
                     <img
-                        className="selected-show-image" // Apply a class for styling
+                        className="selected-show-image"
                         src={selectedShow.image}
                         alt={selectedShow.title}
                     />
                     <p className="selected-show-description">{selectedShow.description}</p>
-                    <h2>Number of Seasons: {selectedShow.seasons && selectedShow.seasons.length}</h2>
 
+                    {/* Display the number of seasons in a dropdown */}
                     <div className="dropdowns">
-                        {/* Dropdown for SEASON Selection */}
                         <label htmlFor="season">Select a season:</label>
                         <select
                             name="season"
@@ -68,39 +80,54 @@ const SelectedShow = () => {
                             value={selectedSeason}
                         >
                             <option value="">Select a season</option>
-                            {selectedShow.seasons && Array.isArray(selectedShow.seasons) && selectedShow.seasons.map((season, index) => (
-                                <option key={index} value={season.title}>
-                                    {season.title}
+                            {/* Map through the number of seasons */}
+                            {Array.from({ length: selectedShow.seasons }, (_, index) => (
+                                <option key={index} value={`Season ${index + 1}`}>
+                                    {`Season ${index + 1}`}
                                 </option>
-                            ))}
+                            )
+                            )}
                         </select>
                     </div>
 
-                    {/* Display episodes for the selected season */}
-                    {selectedSeasonEpisodes.length > 0 && (
-                        <div className="episode-list">
-                            <h3>{selectedSeason} Episodes:</h3>
-                            <ul>
+                    {/* Dropdown for EPISODE Selection (conditional rendering) */}
+                    {selectedSeason && (
+                        <div className="episode-dropdown">
+                            <label htmlFor="episode">Select an episode:</label>
+                            <select
+                                name="episode"
+                                className="episode"
+                                value={selectedEpisodeAudio}
+                                onChange={(event) => handlePlay(event.target.value)}
+                            >
+                                <option value="">Select an episode</option>
                                 {selectedSeasonEpisodes.map((episode, index) => (
-                                    <li key={index}>
-                                        <button onClick={() => handlePlay(episode.file)}>{episode.title}</button>
-                                    </li>
-                                ))}
-                            </ul>
+                                    <option key={index} value={episode.file}>
+                                        {episode.title}
+                                    </option>
+                                )
+                                )}
+
+                            </select>
+                            {/* Display episode images and titles in a column */}
+                            {selectedSeasonEpisodes.map((episode, index) => (
+                                <div className="episode-entry" key={index}>
+                                    <img className="episode-image" src={episode.image} alt={episode.title} />
+                                    <span className="episode-title">{episode.title}</span>
+                                </div>
+                            )
+                            )}
                         </div>
                     )}
 
-                    {/* "Go back" button to navigate to the '/home' page */}
                     <button onClick={goBackToHome}>Go back</button>
 
-                    {/* AudioPlayer component */}
                     <AudioPlayer
                         episode={{ file: selectedEpisodeAudio }}
                         isPlaying={isAudioPlaying}
                         onClose={() => setIsAudioPlaying(false)}
                     />
                 </div>
-
             ) : (
                 <p>No show selected.</p>
             )}
