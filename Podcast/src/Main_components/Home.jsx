@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ShowCard from './ShowCard';
 import './Content.css';
 import Navbar from '../Header_components/Navbar';
+import GenreCarousel from '../GenreCarousel_component/GenreCarousel'
 import CircularProgress from '@mui/material/CircularProgress';
 
 /**
@@ -81,14 +82,21 @@ const Home = ({ selectedShow }) => {
 
     const sortShowsByDate = () => {
         const sorted = shows.slice().sort((a, b) => {
+            // Parse and format the dates, then compare them
+            const formattedDateA = formatDate(a.date);
+            const formattedDateB = formatDate(b.date);
+
             if (sortAscending) {
-                return new Date(a.date) - new Date(b.date);
+                return formattedDateA.localeCompare(formattedDateB); // Ascending order
             } else {
-                return new Date(b.date) - new Date(a.date);
+                return formattedDateB.localeCompare(formattedDateA); // Descending order
             }
         });
+
         setShows(sorted);
     };
+
+
 
     const logFavoriteShow = (message) => {
         console.log(message);
@@ -103,6 +111,11 @@ const Home = ({ selectedShow }) => {
             ) : (
                 <div className="main__content">
                     <Navbar />
+
+                    <GenreCarousel />
+
+                    <br />
+
                     <h2>Shows to Listen </h2>
                     <button onClick={toggleSortOrder} className="sort-button">
                         Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}

@@ -149,6 +149,7 @@
     cursor: pointer;
     font-size: 16px;
     /* Set the font size */
+    margin-right: 50px;
 }
 
 /* On hover, show the dropdown content */
@@ -191,7 +192,6 @@
 /* ============== Menu dropdown Styles ============== */
 .button {
     text-decoration: none;
-    background-color: #FF5733;
     /* Set your desired background color */
     color: white;
     padding: 10px 20px;

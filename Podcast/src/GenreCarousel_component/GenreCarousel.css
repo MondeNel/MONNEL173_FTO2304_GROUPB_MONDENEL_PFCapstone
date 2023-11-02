@@ -1,0 +1,43 @@
+/* GenreCarousel.css */
+
+.genre-carousel {
+    margin: 20px;
+    text-align: center;
+}
+
+.genre-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: 2px solid #ccc;
+    background: #f2f2f2;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+}
+
+button:hover {
+    background: #333;
+    color: white;
+    border-color: #333;
+}
+
+button.selected {
+    background: #333;
+    color: white;
+    border-color: #333;
+}
+
+@media (max-width: 768px) {
+    .genre-buttons {
+        flex-direction: column;
+    }
+
+    button {
+        width: 100%;
+    }
+}

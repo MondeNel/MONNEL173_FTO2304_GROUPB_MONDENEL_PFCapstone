@@ -27,7 +27,7 @@ const Navbar = () => {
         width: '100%',
         zIndex: 100,
         backgroundColor: 'white',
-        padding: '10px 10px 0 10px',
+
     };
 
     return (

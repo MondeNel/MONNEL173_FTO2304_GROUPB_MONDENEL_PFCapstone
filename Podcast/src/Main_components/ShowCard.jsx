@@ -1,15 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Button from '@mui/material/Button';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import './Card.css';
 
 import supabase from '../config/supabaseClient';
-import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
+
 
 /**
  * ShowCard component displays information about a show and allows interactions with it.
@@ -22,60 +17,11 @@ import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
  * @returns {JSX.Element} The ShowCard component JSX.
  */
 const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) => {
-    const [isDialogOpen, setDialogOpen] = useState(false);
-    const [selectedSeason, setSelectedSeason] = useState(''); // Selected SEASON
-    const [selectedEpisode, setSelectedEpisode] = useState(''); // Selected EPISODE
     const [isFavorite, setIsFavorite] = useState(false);
-
-    const [showSeasons, setShowSeasons] = useState([]); // To store SEASON data
-    const [showEpisodes, setShowEpisodes] = useState([]); // To store EPISODE data
-
-    const [isAudioPlaying, setIsAudioPlaying] = useState(false);
-    const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
-
-    const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState(false);
-    const [selectedEpisodeFile, setSelectedEpisodeFile] = useState('');
-
-    const [selectedShow, setSelectedShow] = useState([]);
 
     // Use the useNavigate hook to get the navigation function
     const navigate = useNavigate();
 
-
-    // Handle the Play button click
-    const handlePlay = (episodeFile) => {
-        setSelectedEpisodeFile(episodeFile);
-        setIsEpisodeModalOpen(true);
-    }
-
-    const openDialog = async () => {
-        try {
-            const response = await fetch(`https://podcast-api.netlify.app/id/${show.id}`);
-            if (response.ok) {
-                const data = await response.json();
-
-                // Extract SEASON data from the API response
-                const { seasons } = data;
-
-                // Log the SEASONS
-                console.log('SEASONS:', seasons);
-
-                // Set the SEASON data in state
-                setShowSeasons(seasons);
-            } else {
-                console.error('Error fetching show details:', response.status, response.statusText);
-            }
-        } catch (error) {
-            console.error('Error fetching show details:', error);
-        }
-        setDialogOpen(true);
-    }
-
-
-
-    const closeDialog = () => {
-        setDialogOpen(false);
-    };
 
     const toggleFavorite = async (event) => {
         setIsFavorite(!isFavorite);
@@ -106,6 +52,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         }
     }
 
+
     /**
      * Format a date string into a human-readable date.
      *
@@ -127,8 +74,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         <div className="show__card">
             <h2>{show.title}</h2>
             <img src={show.image.toString()} alt={show.title} />
-            <p>Number of Seasons: {show.seasons}</p>
-            <p>Last Updated: {formatDate(show.updated)}</p>
+            <h3>Seasons: {show.seasons}</h3>
+            <h5>{formatDate(show.updated)}</h5>
 
             <div className="genre">
                 {show.genres && Array.isArray(show.genres) && show.genres.map((genreId) => (
