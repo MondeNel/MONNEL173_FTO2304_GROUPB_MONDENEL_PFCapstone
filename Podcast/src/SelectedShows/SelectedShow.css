@@ -1,0 +1,17 @@
+/* SelectedShow.css */
+.selected-show-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.selected-show-image {
+    max-width: 200px;
+    /* Adjust the size as needed */
+    height: auto;
+}
+
+.selected-show-description {
+    font-size: 14px;
+    /* Adjust the font size as needed */
+    margin: 10px 0;
+}

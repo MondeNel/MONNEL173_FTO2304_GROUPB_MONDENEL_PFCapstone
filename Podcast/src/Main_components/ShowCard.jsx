@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -35,6 +36,12 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
     const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState(false);
     const [selectedEpisodeFile, setSelectedEpisodeFile] = useState('');
 
+    const [selectedShow, setSelectedShow] = useState([]);
+
+    // Use the useNavigate hook to get the navigation function
+    const navigate = useNavigate();
+
+
     // Handle the Play button click
     const handlePlay = (episodeFile) => {
         setSelectedEpisodeFile(episodeFile);
@@ -64,26 +71,6 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         setDialogOpen(true);
     }
 
-    // Handle SEASON Selection
-    const handleSeasonChange = (event) => {
-        const selectedSeasonValue = event.target.value;
-        setSelectedSeason(selectedSeasonValue);
-
-        // Extract EPISODE data from the selected season
-        if (selectedSeasonValue) {
-            const selectedSeasonData = showSeasons.find((season) => season.title === selectedSeasonValue);
-            if (selectedSeasonData) {
-                const episodes = selectedSeasonData.episodes;
-                setShowEpisodes(episodes);
-            } else {
-                // If no season is selected, clear the episodes
-                setShowEpisodes([]);
-            }
-        } else {
-            // If no season is selected, clear the episodes
-            setShowEpisodes([]);
-        }
-    };
 
 
     const closeDialog = () => {
@@ -130,6 +117,12 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         return new Date(dateString).toLocaleDateString(undefined, options);
     }
 
+    // Function to navigate to the '/selectedShow' page
+    const viewDetails = () => {
+        navigate('/selectedShow', { state: { selectedShow: show } });
+    }
+
+
     return (
         <div className="show__card">
             <h2>{show.title}</h2>
@@ -148,77 +141,14 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
             </div>
 
             <div className="show__align">
-                <button onClick={openDialog}>Show Details</button>
+                <button onClick={viewDetails}>View Details</button>
 
-                <div className="play-button" onClick={handlePlay}>
-                    {isAudioPlaying ? ( // Change isPlaying to isAudioPlaying
-                        <span>Playing</span>
-                    ) : (
-                        <PlayArrowIcon style={{ fontSize: 35, color: 'red' }} />
-                    )}
-                </div>
 
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <FavoriteIcon style={{ color: isFavorite ? 'red' : 'grey' }} />
                 </div>
             </div>
 
-            <Dialog open={isDialogOpen} onClose={closeDialog}>
-                <DialogTitle>{show.title}</DialogTitle>
-                <DialogContent>
-                    <p>{show.description}</p>
-                    <div className="dropdowns">
-                        {/* Dropdown for SEASON Selection */}
-                        <label htmlFor="season">Select a season:</label>
-                        <select name="season" className="season" onChange={handleSeasonChange}>
-                            <option value="">Select a season</option>
-                            {showSeasons.map((season, index) => (
-                                <option key={index} value={`Season ${index + 1}`}>
-                                    {`Season ${index + 1}`}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {/* Display episodes for the selected season */}
-                    {showEpisodes.length > 0 && (
-                        <div className="episode-list">
-                            <h3>Episodes:</h3>
-                            <ul>
-                                {showEpisodes.map((episode, index) => (
-                                    <li key={index}>
-                                        <button onClick={() => handlePlay(episode.file)}>{episode.title}</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-
-                    <Button onClick={closeDialog} color="primary">
-                        Close
-                    </Button>
-                </DialogContent>
-            </Dialog>
-
-            {/* AudioPlayer component */}
-            <AudioPlayer
-                episode={{ file: selectedEpisodeAudio }}
-                isPlaying={isAudioPlaying}
-                onClose={() => setIsAudioPlaying(false)}
-            />
-
-            <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
-                <DialogTitle>Episode Player</DialogTitle>
-                <DialogContent>
-                    <audio controls>
-                        <source src={selectedEpisodeFile} type="audio/mpeg" />
-                        Your browser does not support the audio element.
-                    </audio>
-                    <Button onClick={() => setIsEpisodeModalOpen(false)} color="primary">
-                        Close
-                    </Button>
-                </DialogContent>
-            </Dialog>
         </div>
     );
 };
