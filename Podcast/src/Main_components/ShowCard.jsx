@@ -85,6 +85,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
         }
     };
 
+
     const closeDialog = () => {
         setDialogOpen(false);
     };
@@ -172,8 +173,8 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                         <select name="season" className="season" onChange={handleSeasonChange}>
                             <option value="">Select a season</option>
                             {showSeasons.map((season, index) => (
-                                <option key={index} value={season.title}>
-                                    {season.title}
+                                <option key={index} value={`Season ${index + 1}`}>
+                                    {`Season ${index + 1}`}
                                 </option>
                             ))}
                         </select>
