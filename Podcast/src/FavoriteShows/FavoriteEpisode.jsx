@@ -8,24 +8,21 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 
 import supabase from '../config/supabaseClient';
-import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
+import AudioPlayer from '../AudioPlayer_components/AudioPlayer'; // Import the AudioPlayer component
 
 const FavoriteEpisode = () => {
     const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
     const [showMore, setShowMore] = useState(false);
-    const [isAudioPlayerOpen, setIsAudioPlayerOpen] = useState(false);
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [isEpisodeModalOpen, setIsEpisodeModalOpen] = useState(false);
-
-
-    const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState(''); // Initialize it with an empty string
+    const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
 
     // Handle the Play button click
     const handlePlay = (episodeFile) => {
-        setSelectedEpisodeAudio(episodeFile);
+        // Set the selected episode's audio file URL to the provided link
+        setSelectedEpisodeAudio("https://podcast-api.netlify.app/placeholder-audio.mp3");
         setIsEpisodeModalOpen(true);
     }
-
 
 
     useEffect(() => {
@@ -119,6 +116,7 @@ const FavoriteEpisode = () => {
                         <IconButton onClick={() => handlePlay(episode)} style={{ color: '#0077b6' }}>
                             <PlayCircleOutlineIcon />
                         </IconButton>
+
                         <IconButton onClick={() => handleDelete(episode.id)} style={{ color: '#e63946' }}>
                             <DeleteIcon />
                         </IconButton>
@@ -135,7 +133,7 @@ const FavoriteEpisode = () => {
 
             {/* AudioPlayer component */}
             <AudioPlayer
-                episode={{ file: selectedEpisodeAudio }} // Pass the selected episode as a prop
+                episode={{ file: selectedEpisodeAudio }}
                 isPlaying={isAudioPlaying}
                 onClose={() => setIsAudioPlaying(false)}
             />
@@ -143,7 +141,6 @@ const FavoriteEpisode = () => {
             <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
                 <DialogTitle>Episode Player</DialogTitle>
                 <DialogContent>
-                    {/* In the <source> element, use the audioSource instead of selectedEpisodeFile */}
                     <audio controls>
                         <source src={selectedEpisodeAudio} type="audio/mpeg" />
                         Your browser does not support the audio element.
@@ -153,8 +150,6 @@ const FavoriteEpisode = () => {
                     </Button>
                 </DialogContent>
             </Dialog>
-
-
 
         </div>
     );

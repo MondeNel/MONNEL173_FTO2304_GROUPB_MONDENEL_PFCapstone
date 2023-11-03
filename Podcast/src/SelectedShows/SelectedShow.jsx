@@ -16,7 +16,13 @@ const SelectedShow = () => {
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
     const [favorites, setFavorites] = useState([]); // Track favorite episodes
+
     const navigate = useNavigate();
+
+    const goBackToHome = () => {
+        navigate('/home');
+    };
+
 
     // Define the isFavorite function earlier in the code
     const isFavorite = (episodeTitle) => favorites.includes(episodeTitle);
@@ -95,9 +101,6 @@ const SelectedShow = () => {
 
 
 
-    const goBackToHome = () => {
-        navigate('/home');
-    };
 
     return (
         <Container className="selected-show-container">
@@ -137,7 +140,10 @@ const SelectedShow = () => {
                                 <Typography>{episode.description}</Typography> {/* Added episode description here */}
                             </CardContent>
                             <CardActions>
+
                                 <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
+
+
                                 <IconButton
                                     style={{ color: isFavorite ? 'red' : 'grey' }}
                                     className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
@@ -153,7 +159,7 @@ const SelectedShow = () => {
 
                     <AudioPlayer
                         episode={{ file: selectedEpisodeAudio }}
-                        isPlaying={isAudioPlaying}
+                        isPlaying={isAudioPlaying} // Step 5: Pass isAudioPlaying to AudioPlayer
                         onClose={() => setIsAudioPlaying(false)}
                     />
                 </div>
