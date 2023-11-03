@@ -42,7 +42,8 @@ const Navbar = () => {
                 <button className="dropbtn">Menu</button>
                 <div className="dropdown-content">
                     <Link to="/favoriteList" className="link-button">Favorite Shows</Link>
-                    {/* You can add a button to log out the user directly in the favorite shows dropdown. */}
+                    <Link to="/favoriteEpisode" className="link-button">Favorite Episodes</Link>
+
                     <button onClick={signOutUser} className="log-out-button">Log Out</button>
                 </div>
             </div>

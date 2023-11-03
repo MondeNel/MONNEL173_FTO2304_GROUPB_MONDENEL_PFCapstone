@@ -28,15 +28,19 @@ const SelectedShow = () => {
         setIsAudioPlaying(true);
     };
 
-    const toggleFavorite = (episodeTitle) => {
+    const toggleFavorite = (episodeTitle, episodeDescription) => {
         setFavorites((prevFavorites) => {
             if (prevFavorites.includes(episodeTitle)) {
+                console.log(`Removed from favorites: ${episodeTitle}`);
                 return prevFavorites.filter((title) => title !== episodeTitle);
             } else {
+                console.log(`Added to favorites: ${episodeTitle}`);
+                console.log(`Episode Description: ${episodeDescription}`);
                 return [...prevFavorites, episodeTitle];
             }
         });
     };
+
 
     const isFavorite = (episodeTitle) => favorites.includes(episodeTitle);
 
@@ -108,12 +112,14 @@ const SelectedShow = () => {
                                     </CardContent>
                                     <CardActions>
                                         <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
+
                                         <IconButton
                                             className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
-                                            onClick={() => toggleFavorite(episode.title)}
+                                            onClick={() => toggleFavorite(episode.title, episode.description)}
                                         >
                                             {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                         </IconButton>
+
                                     </CardActions>
                                 </Card>
                             )
