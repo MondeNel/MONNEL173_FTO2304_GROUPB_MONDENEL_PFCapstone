@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import './SelectedShow.css'; // Import a CSS file for styling
+import { Container, Typography, Button, Card, CardContent, CardActions, IconButton } from '@mui/material';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import './SelectedShow.css';
 import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
 
-const SelectedShow = ({ show }) => {
-    console.log(show);
+const SelectedShow = () => {
     const location = useLocation();
     const selectedShow = location.state?.selectedShow || null;
     const [selectedSeason, setSelectedSeason] = useState('');
     const [selectedSeasonEpisodes, setSelectedSeasonEpisodes] = useState([]);
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
+    const [favorites, setFavorites] = useState([]); // Track favorite episodes
     const navigate = useNavigate();
 
     const handleSeasonChange = (event) => {
@@ -24,6 +27,18 @@ const SelectedShow = ({ show }) => {
         setSelectedEpisodeAudio(episodeFile);
         setIsAudioPlaying(true);
     };
+
+    const toggleFavorite = (episodeTitle) => {
+        setFavorites((prevFavorites) => {
+            if (prevFavorites.includes(episodeTitle)) {
+                return prevFavorites.filter((title) => title !== episodeTitle);
+            } else {
+                return [...prevFavorites, episodeTitle];
+            }
+        });
+    };
+
+    const isFavorite = (episodeTitle) => favorites.includes(episodeTitle);
 
     const goBackToHome = () => {
         navigate('/home');
@@ -52,23 +67,17 @@ const SelectedShow = ({ show }) => {
         fetchSeasonData();
     }, [selectedShow, selectedSeason]);
 
-    console.log('selectedSeasonEpisodes:', selectedSeasonEpisodes);
-
-    console.log('selectedSeason:', selectedSeason);
-
-    console.log('selectedShow.id:', selectedShow.id);
-
     return (
-        <div className="selected-show-container">
+        <Container className="selected-show-container">
             {selectedShow ? (
                 <div>
-                    <h2>{selectedShow.title}</h2>
+                    <Typography variant="h2">{selectedShow.title}</Typography>
                     <img
                         className="selected-show-image"
                         src={selectedShow.image}
                         alt={selectedShow.title}
                     />
-                    <p className="selected-show-description">{selectedShow.description}</p>
+                    <Typography className="selected-show-description">{selectedShow.description}</Typography>
 
                     {/* Display the number of seasons in a dropdown */}
                     <div className="dropdowns">
@@ -80,47 +89,39 @@ const SelectedShow = ({ show }) => {
                             value={selectedSeason}
                         >
                             <option value="">Select a season</option>
-                            {/* Map through the number of seasons */}
                             {Array.from({ length: selectedShow.seasons }, (_, index) => (
                                 <option key={index} value={`Season ${index + 1}`}>
                                     {`Season ${index + 1}`}
                                 </option>
-                            )
-                            )}
+                            ))}
                         </select>
                     </div>
 
-                    {/* Dropdown for EPISODE Selection (conditional rendering) */}
+                    {/* Display the episodes in a Netflix-style layout */}
                     {selectedSeason && (
-                        <div className="episode-dropdown">
-                            <label htmlFor="episode">Select an episode:</label>
-                            <select
-                                name="episode"
-                                className="episode"
-                                value={selectedEpisodeAudio}
-                                onChange={(event) => handlePlay(event.target.value)}
-                            >
-                                <option value="">Select an episode</option>
-                                {selectedSeasonEpisodes.map((episode, index) => (
-                                    <option key={index} value={episode.file}>
-                                        {episode.title}
-                                    </option>
-                                )
-                                )}
-
-                            </select>
-                            {/* Display episode images and titles in a column */}
+                        <div className="episode-list">
                             {selectedSeasonEpisodes.map((episode, index) => (
-                                <div className="episode-entry" key={index}>
-                                    <img className="episode-image" src={episode.image} alt={episode.title} />
-                                    <span className="episode-title">{episode.title}</span>
-                                </div>
+                                <Card key={index} className="card">
+                                    <CardContent>
+                                        <Typography variant="h5">{`Episode ${index + 1}: ${episode.title}`}</Typography>
+                                        <Typography>{episode.description}</Typography>
+                                    </CardContent>
+                                    <CardActions>
+                                        <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
+                                        <IconButton
+                                            className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
+                                            onClick={() => toggleFavorite(episode.title)}
+                                        >
+                                            {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                        </IconButton>
+                                    </CardActions>
+                                </Card>
                             )
                             )}
                         </div>
                     )}
 
-                    <button onClick={goBackToHome}>Go back</button>
+                    <Button className='go_back' onClick={goBackToHome}>Go back</Button>
 
                     <AudioPlayer
                         episode={{ file: selectedEpisodeAudio }}
@@ -129,9 +130,9 @@ const SelectedShow = ({ show }) => {
                     />
                 </div>
             ) : (
-                <p>No show selected.</p>
+                <Typography>No show selected.</Typography>
             )}
-        </div>
+        </Container>
     );
 };
 
