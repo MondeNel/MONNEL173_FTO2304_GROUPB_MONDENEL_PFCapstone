@@ -11,10 +11,15 @@
 }
 
 .selected-show-description {
-    font-size: 14px;
+    font-size: smaller;
     /* Adjust the font size as needed */
     margin: 10px 0;
 }
+
+.select {
+    font-weight: bold;
+}
+
 
 /* SelectedShow.css */
 
@@ -22,6 +27,11 @@
 .episode-dropdown {
     display: flex;
     flex-wrap: wrap;
+}
+
+.episode-title {
+    font-size: 12px;
+    font-weight: bold;
 }
 
 /* Style each episode entry in the dropdown */
@@ -32,15 +42,6 @@
     /* Adjust the spacing between episodes as needed */
 }
 
-/* Style the episode image */
-.episode-image {
-    width: 50px;
-    /* Adjust the image width as needed */
-    height: 50px;
-    /* Adjust the image height as needed */
-    margin-right: 10px;
-    /* Adjust the spacing between the image and title as needed */
-}
 
 /* Style the episode title */
 .episode-title {
@@ -77,7 +78,7 @@
 
 /* Style the episode title */
 .episode-title {
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
 }
 
@@ -88,67 +89,39 @@
     margin-top: 20px;
 }
 
+
+
 .card {
-    /* Set a fixed height for each card */
-    height: auto;
-    /* Auto height to accommodate content */
+    gap: 20px;
     padding: 20px;
-    /* Add padding to create space for content */
-    margin: 10px;
-    /* Add some margin for spacing */
-    width: 100%;
-    /* Set the width of the card */
-    max-width: 400px;
-    /* Optional: Set a maximum width */
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
-    /* Add a box shadow for a card effect */
-    border: 1px solid #ccc;
-    /* Add a border for a card outline */
-    border-radius: 8px;
-    /* Add rounded corners */
-}
-
-.card-content {
-    padding: 10px;
-}
-
-.episode-item {
-    border: 1px solid #acacac;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px;
-    text-align: left;
-    width: 70%;
-    box-shadow: 2px 2px 5px #4d4c4c;
-}
-
-.episode-item h3 {
-    font-size: 18px;
     margin: 0;
-}
-
-.episode-item p {
-    font-size: 14px;
-    margin: 10px 0;
-}
-
-.episode-item button {
-    background-color: #011b36;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.episode-item button:hover {
-    background-color: #0056b3;
-}
-
-.card {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    border: 1px solid #ccc;
+    border-radius: 8px;
     margin-top: 20px;
     margin-bottom: 20px;
 }
+
+.card .audio-and-favorite {
+    display: flex;
+    justify-content: space-between;
+}
+
+.card .audio-and-favorite audio {
+    flex: 1;
+    /* Takes up all available space */
+    max-width: calc(100% - 48px);
+    /* Adjust max-width to create space for the IconButton */
+}
+
+.card .audio-and-favorite .favorite-icon {
+    width: 48px;
+    /* Set a fixed width for the IconButton */
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
 
 /* Add this to your SelectedShow.css */
 .favorite-icon.active {

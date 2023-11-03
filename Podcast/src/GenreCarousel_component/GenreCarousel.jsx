@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // Import useNavigate
 import './GenreCarousel.css';
 
 /**
@@ -7,10 +7,10 @@ import './GenreCarousel.css';
  */
 const GenreCarousel = () => {
     const [selectedGenre, setSelectedGenre] = useState('');
-    const [selectedShow, setSelectedShow] = useState(null); // Added selectedShow state
+    const [selectedShow, setSelectedShow] = useState(null);
     const [shows, setShows] = useState([]);
     const [filteredShows, setFilteredShows] = useState([]);
-    const dropdownRef = useRef(null); // Ref for the dropdown element
+    const dropdownRef = useRef(null);
 
     const genreMap = {
         1: "Personal Growth",
@@ -23,6 +23,8 @@ const GenreCarousel = () => {
         8: "News",
         9: "Kids and Family"
     };
+
+    const navigate = useNavigate(); // Initialize useNavigate
 
     useEffect(() => {
         // Fetch all shows from the API when the component mounts
@@ -79,12 +81,6 @@ const GenreCarousel = () => {
         setSelectedShow(null);
     };
 
-
-    // Function to navigate to the '/selectedShow' page
-    const viewDetails = () => {
-        navigate('/selectedShow', { state: { selectedShow: show } });
-    }
-
     return (
         <div className="genre-carousel">
             <div className="show-list">
@@ -96,8 +92,7 @@ const GenreCarousel = () => {
                             <option key={index} value={genre}>
                                 {genre}
                             </option>
-                        )
-                        )}
+                        ))}
                     </select>
                 </div>
                 <ul>

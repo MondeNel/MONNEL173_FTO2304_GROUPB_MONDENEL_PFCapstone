@@ -99,6 +99,19 @@ const SelectedShow = () => {
         fetchSeasonData();
     }, [selectedShow, selectedSeason]);
 
+    function formatDateTime(dateTimeString) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            timeZoneName: 'short',
+        };
+        return new Date(dateTimeString).toLocaleDateString(undefined, options);
+    }
+
 
 
 
@@ -106,7 +119,7 @@ const SelectedShow = () => {
         <Container className="selected-show-container">
             {selectedShow ? (
                 <div>
-                    <Typography variant="h2">{selectedShow.title}</Typography>
+                    <Typography variant="h5">{selectedShow.title}</Typography>
                     <img
                         className="selected-show-image"
                         src={selectedShow.image}
@@ -114,9 +127,11 @@ const SelectedShow = () => {
                     />
                     <Typography className="selected-show-description">{selectedShow.description}</Typography>
 
+                    <br />
+
                     {/* Display the number of seasons in a dropdown */}
                     <div className="dropdowns">
-                        <label htmlFor="season">Select a season:</label>
+                        <label htmlFor="season" className='select'>Select a season:</label>
                         <select
                             name="season"
                             className="season"
@@ -132,17 +147,34 @@ const SelectedShow = () => {
                         </select>
                     </div>
 
-                    {/* Display the episodes layout */}
                     {selectedSeasonEpisodes.map((episode, index) => (
                         <Card key={index} className="card">
                             <CardContent>
-                                <Typography variant="h5">{`Episode ${index + 1}: ${episode.title}`}</Typography>
-                                <Typography>{episode.description}</Typography> {/* Added episode description here */}
+                                <Typography className='episode-title'>{`Episode ${index + 1}`}</Typography>
+                                <br />
+                                <Typography>{episode.title}</Typography>
+                                <Typography>{episode.description}</Typography>
+
+                                <br />
+
+                                <Typography>{`Date: ${new Date(selectedShow.updated).toLocaleString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit',
+                                    second: '2-digit',
+                                })}`}</Typography>
+
+
                             </CardContent>
                             <CardActions>
 
-                                <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
-
+                                <AudioPlayer
+                                    episode={{ file: selectedEpisodeAudio }}
+                                    isPlaying={isAudioPlaying} // Step 5: Pass isAudioPlaying to AudioPlayer
+                                    onClose={() => setIsAudioPlaying(false)}
+                                />
 
                                 <IconButton
                                     style={{ color: isFavorite ? 'red' : 'grey' }}
@@ -151,17 +183,16 @@ const SelectedShow = () => {
                                 >
                                     {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
+
                             </CardActions>
                         </Card>
                     ))}
 
+
+
                     <Button className='go_back' onClick={goBackToHome}>Go back</Button>
 
-                    <AudioPlayer
-                        episode={{ file: selectedEpisodeAudio }}
-                        isPlaying={isAudioPlaying} // Step 5: Pass isAudioPlaying to AudioPlayer
-                        onClose={() => setIsAudioPlaying(false)}
-                    />
+
                 </div>
             ) : (
                 <Typography>No show selected.</Typography>

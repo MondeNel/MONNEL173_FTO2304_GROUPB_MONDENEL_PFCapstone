@@ -1,0 +1,12 @@
+.carousel {
+    background-color: rgb(207, 232, 240);
+    margin-bottom: 60px;
+}
+
+.buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: none;
+    background-color: darkblue;
+}

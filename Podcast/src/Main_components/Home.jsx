@@ -4,6 +4,7 @@ import './Content.css';
 import Navbar from '../Header_components/Navbar';
 import GenreCarousel from '../GenreCarousel_component/GenreCarousel'
 import CircularProgress from '@mui/material/CircularProgress';
+import CarouselCard from '../Carousel_components/CarouselCard';
 
 /**
  * Home component for displaying a list of shows and their details.
@@ -18,6 +19,9 @@ const Home = ({ selectedShow }) => {
     const [showMore, setShowMore] = useState(false);
     const [sortAscending, setSortAscending] = useState(true);
     const [loading, setLoading] = useState(true);
+
+
+
 
     // Define the mapping between GENRE ids and titles
     const genreMapping = {
@@ -113,6 +117,11 @@ const Home = ({ selectedShow }) => {
                     <Navbar />
 
                     <GenreCarousel />
+
+                    <br />
+
+                    <CarouselCard shows={shows} />
+
 
                     <br />
 

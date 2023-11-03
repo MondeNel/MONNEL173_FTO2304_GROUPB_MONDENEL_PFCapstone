@@ -94,6 +94,7 @@ const ShowCard = ({ show, genreMapping, logFavoriteShow, updateFavoriteShows }) 
                 <div className="favorite-icon" onClick={toggleFavorite}>
                     <FavoriteIcon style={{ color: isFavorite ? 'red' : 'grey' }} />
                 </div>
+
             </div>
 
         </div>
