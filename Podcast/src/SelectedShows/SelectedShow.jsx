@@ -6,6 +6,8 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import './SelectedShow.css';
 import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
 
+import supabase from '../config/supabaseClient';
+
 const SelectedShow = () => {
     const location = useLocation();
     const selectedShow = location.state?.selectedShow || null;
@@ -15,6 +17,9 @@ const SelectedShow = () => {
     const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
     const [favorites, setFavorites] = useState([]); // Track favorite episodes
     const navigate = useNavigate();
+
+    // Define the isFavorite function earlier in the code
+    const isFavorite = (episodeTitle) => favorites.includes(episodeTitle);
 
     const handleSeasonChange = (event) => {
         const selectedSeasonValue = event.target.value;
@@ -28,25 +33,41 @@ const SelectedShow = () => {
         setIsAudioPlaying(true);
     };
 
-    const toggleFavorite = (episodeTitle, episodeDescription) => {
-        setFavorites((prevFavorites) => {
-            if (prevFavorites.includes(episodeTitle)) {
-                console.log(`Removed from favorites: ${episodeTitle}`);
-                return prevFavorites.filter((title) => title !== episodeTitle);
+    const logFavoriteEpisode = (message) => {
+        console.log(message);
+        // You can customize this function to log messages as needed.
+    };
+
+
+    const toggleFavoriteEpisode = async (episode, isFavorite) => {
+        try {
+            if (!isFavorite) {
+                logFavoriteEpisode(`Added to favorites: ${episode.title}`);
+                const favoriteEpisode = {
+                    title: episode.title,
+                    description: episode.description,
+                    episode: episode.episode,
+                    is_favorite: true,
+                };
+
+                const { data, error } = await supabase.from('favorite_episodes').upsert([favoriteEpisode]);
+
+                if (error) {
+                    console.error('Error adding to favorite episodes:', error);
+                } else {
+                    console.log('Added to favorite episodes:', data);
+                    // You may want to update the local state or trigger a re-render here
+                }
             } else {
-                console.log(`Added to favorites: ${episodeTitle}`);
-                console.log(`Episode Description: ${episodeDescription}`);
-                return [...prevFavorites, episodeTitle];
+                logFavoriteEpisode(`Removed from favorites: ${episode.title}`);
             }
-        });
+        } catch (error) {
+            console.error('Error in toggleFavoriteEpisode:', error);
+        }
     };
 
 
-    const isFavorite = (episodeTitle) => favorites.includes(episodeTitle);
 
-    const goBackToHome = () => {
-        navigate('/home');
-    };
 
     useEffect(() => {
         // Fetch season data when the selected season changes
@@ -70,6 +91,10 @@ const SelectedShow = () => {
 
         fetchSeasonData();
     }, [selectedShow, selectedSeason]);
+
+    const goBackToHome = () => {
+        navigate('/home');
+    };
 
     return (
         <Container className="selected-show-container">
@@ -112,13 +137,14 @@ const SelectedShow = () => {
                                     </CardContent>
                                     <CardActions>
                                         <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
-
                                         <IconButton
+                                            style={{ color: isFavorite ? 'red' : 'grey' }}
                                             className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
-                                            onClick={() => toggleFavorite(episode.title, episode.description)}
+                                            onClick={() => toggleFavoriteEpisode(episode, isFavorite(episode.title))}
                                         >
                                             {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                         </IconButton>
+
 
                                     </CardActions>
                                 </Card>
