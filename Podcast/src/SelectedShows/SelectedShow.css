@@ -88,6 +88,30 @@
     margin-top: 20px;
 }
 
+.card {
+    /* Set a fixed height for each card */
+    height: auto;
+    /* Auto height to accommodate content */
+    padding: 20px;
+    /* Add padding to create space for content */
+    margin: 10px;
+    /* Add some margin for spacing */
+    width: 100%;
+    /* Set the width of the card */
+    max-width: 400px;
+    /* Optional: Set a maximum width */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    /* Add a box shadow for a card effect */
+    border: 1px solid #ccc;
+    /* Add a border for a card outline */
+    border-radius: 8px;
+    /* Add rounded corners */
+}
+
+.card-content {
+    padding: 10px;
+}
+
 .episode-item {
     border: 1px solid #acacac;
     border-radius: 5px;

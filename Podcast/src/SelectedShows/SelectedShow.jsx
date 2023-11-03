@@ -70,7 +70,6 @@ const SelectedShow = () => {
 
 
     useEffect(() => {
-        // Fetch season data when the selected season changes
         const fetchSeasonData = async () => {
             if (selectedShow && selectedShow.id && selectedSeason) {
                 try {
@@ -78,8 +77,10 @@ const SelectedShow = () => {
                     if (response.ok) {
                         const data = await response.json();
                         const selectedShowSeasons = data.seasons;
-                        const selectedSeasonData = selectedShowSeasons.find((season) => season.title === selectedSeason);
-                        setSelectedSeasonEpisodes(selectedSeasonData ? selectedSeasonData.episodes : []);
+                        const allEpisodes = selectedShowSeasons
+                            .map((season) => season.episodes)
+                            .flat(); // Flatten the episodes from all seasons into a single array
+                        setSelectedSeasonEpisodes(allEpisodes);
                     } else {
                         console.error('Error fetching show details:', response.status, response.statusText);
                     }
@@ -91,6 +92,8 @@ const SelectedShow = () => {
 
         fetchSeasonData();
     }, [selectedShow, selectedSeason]);
+
+
 
     const goBackToHome = () => {
         navigate('/home');
@@ -126,32 +129,25 @@ const SelectedShow = () => {
                         </select>
                     </div>
 
-                    {/* Display the episodes in a Netflix-style layout */}
-                    {selectedSeason && (
-                        <div className="episode-list">
-                            {selectedSeasonEpisodes.map((episode, index) => (
-                                <Card key={index} className="card">
-                                    <CardContent>
-                                        <Typography variant="h5">{`Episode ${index + 1}: ${episode.title}`}</Typography>
-                                        <Typography>{episode.description}</Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
-                                        <IconButton
-                                            style={{ color: isFavorite ? 'red' : 'grey' }}
-                                            className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
-                                            onClick={() => toggleFavoriteEpisode(episode, isFavorite(episode.title))}
-                                        >
-                                            {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
-                                        </IconButton>
-
-
-                                    </CardActions>
-                                </Card>
-                            )
-                            )}
-                        </div>
-                    )}
+                    {/* Display the episodes layout */}
+                    {selectedSeasonEpisodes.map((episode, index) => (
+                        <Card key={index} className="card">
+                            <CardContent>
+                                <Typography variant="h5">{`Episode ${index + 1}: ${episode.title}`}</Typography>
+                                <Typography>{episode.description}</Typography> {/* Added episode description here */}
+                            </CardContent>
+                            <CardActions>
+                                <Button className="play_button" onClick={() => handlePlay(episode.file)}>Play</Button>
+                                <IconButton
+                                    style={{ color: isFavorite ? 'red' : 'grey' }}
+                                    className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
+                                    onClick={() => toggleFavoriteEpisode(episode, isFavorite(episode.title))}
+                                >
+                                    {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
+                                </IconButton>
+                            </CardActions>
+                        </Card>
+                    ))}
 
                     <Button className='go_back' onClick={goBackToHome}>Go back</Button>
 
