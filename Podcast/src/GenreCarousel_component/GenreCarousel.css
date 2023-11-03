@@ -41,3 +41,90 @@ button.selected {
         width: 100%;
     }
 }
+
+/* Add this CSS to your GenreCarousel.css file or your preferred CSS file */
+.show-list ul {
+    list-style-type: none;
+    /* Remove bullet points */
+    padding: 0;
+}
+
+.show-list li {
+    margin-bottom: 10px;
+    /* Add space between list items */
+    border: 1px solid #ddd;
+    /* Add a border to each item */
+    padding: 10px;
+    background-color: #f0f0f0;
+    /* Set background color */
+    border-radius: 5px;
+}
+
+.show-list li:hover {
+    background-color: #e0e0e0;
+    /* Change background color on hover */
+}
+
+.option {
+    font-size: 25px;
+}
+
+/* Add this to your GenreCarousel.css or a separate CSS file */
+
+
+
+/* Style for the overlay modal */
+.modal-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Style for the modal content */
+.modal {
+    background: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    max-width: 80%;
+    text-align: center;
+}
+
+/* Style for the close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    color: #555;
+}
+
+/* Style for the show title */
+.show-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+/* Style for the show image */
+.show-image {
+    max-width: 100px;
+    /* Set the maximum width as desired */
+    max-height: 100px;
+    /* Set the maximum height as desired */
+    height: auto;
+    margin-bottom: 10px;
+}
+
+/* Style for the show description */
+.show-description {
+    font-size: 16px;
+    line-height: 1.4;
+}

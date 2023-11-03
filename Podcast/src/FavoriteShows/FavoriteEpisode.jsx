@@ -7,8 +7,9 @@ import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
 
+
 import supabase from '../config/supabaseClient';
-import AudioPlayer from '../AudioPlayer_components/AudioPlayer'; // Import the AudioPlayer component
+import AudioPlayer from '../AudioPlayer_components/AudioPlayer';
 
 const FavoriteEpisode = () => {
     const [favoriteEpisodes, setFavoriteEpisodes] = useState([]);
@@ -141,7 +142,7 @@ const FavoriteEpisode = () => {
             <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
                 <DialogTitle>Episode Player</DialogTitle>
                 <DialogContent>
-                    <audio controls>
+                    <audio controls className="audio-player"> {/* Apply the "audio-player" class for styling */}
                         <source src={selectedEpisodeAudio} type="audio/mpeg" />
                         Your browser does not support the audio element.
                     </audio>
