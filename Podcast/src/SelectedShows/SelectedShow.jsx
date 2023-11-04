@@ -17,6 +17,9 @@ const SelectedShow = () => {
     const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
     const [favorites, setFavorites] = useState([]); // Track favorite episodes
 
+
+    const [playMessage, setPlayMessage] = useState('');
+
     const navigate = useNavigate();
 
     const goBackToHome = () => {
@@ -104,6 +107,15 @@ const SelectedShow = () => {
         return new Date(dateString).toLocaleDateString(undefined, options);
     }
 
+    const handleAudioClose = () => {
+        setIsAudioPlaying(false);
+        setPlayMessage('');
+        onClose();
+    };
+
+    const handleAudioControlsPlay = () => {
+        setPlayMessage('Audio is currently playing.');
+    };
 
 
     return (
@@ -165,8 +177,12 @@ const SelectedShow = () => {
                                 </IconButton>
 
                                 <AudioPlayer
-                                    episode={{ file: "https://podcast-api.netlify.app/placeholder-audio.mp3" }}
+                                    episode={{
+                                        file: "https://podcast-api.netlify.app/placeholder-audio.mp3",
+                                        episodeNumber: episode.episode,
+                                    }}
                                     isPlaying={isAudioPlaying}
+                                    onPlay={handleAudioControlsPlay} // Pass the callback to display the play message
                                     onClose={() => setIsAudioPlaying(false)}
                                 />
 

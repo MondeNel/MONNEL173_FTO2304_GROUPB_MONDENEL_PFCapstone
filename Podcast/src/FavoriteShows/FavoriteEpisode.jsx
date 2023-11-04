@@ -71,8 +71,6 @@ const FavoriteEpisode = () => {
                 await navigator.share({
                     title: episode.title,
                     text: episode.description,
-                    // Add other data fields as needed
-                    // url: episode.link, // Replace with the actual link to the episode
                 });
                 console.log('Link shared');
             } else {

@@ -1,44 +1,72 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import './AudioPlayer.css';
+import supabase from '../config/supabaseClient';
 
-/**
- * AudioPlayer component for playing audio episodes.
- *
- * @param {Object} props - The component's props.
- * @param {Object} props.episode - The episode data to be played.
- * @param {boolean} props.isPlaying - Indicates if the audio is currently playing.
- * @param {Function} props.onClose - Function to close the audio player dialog.
- * @returns {JSX.Element} The AudioPlayer component JSX.
- */
-
-const AudioPlayer = ({ episode, isPlaying, onClose }) => {
+const AudioPlayer = ({ episode, isPlaying, onClose, onPlay }) => {
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
+    const [playMessage, setPlayMessage] = useState('');
 
-    /**
-     * Handles the Play button click for audio playback.
-     */
-    const handleAudioPlay = () => {
+    const audioRef = useRef(null);
+
+    const handleAudioPlay = async () => {
         setIsAudioPlaying(true);
+        audioRef.current.play(); // Play the audio
+        setPlayMessage('Audio playing');
+
+        // Replace 'episodeNumber' with the actual episode number or identifier.
+        const episodeNumber = episode.episodeNumber;
+
+        // Update the 'last_listened_episodes' table in Supabase with the episode number and the current date.
+        try {
+            const { data, error } = await supabase.from('last_listened_episodes').upsert([
+                {
+                    episode: episodeNumber,
+                    date: new Date(),
+                },
+            ]);
+
+            if (error) {
+                console.error('Error updating last listened episodes:', error);
+            } else {
+                console.log('Updated last listened episodes:', data);
+            }
+        } catch (error) {
+            console.error('Error in handleAudioPlay:', error);
+        }
+
+        if (onPlay) {
+            onPlay(); // Call the onPlay function to display the message
+        }
     };
 
-    /**
-     * Handles closing the audio player dialog and stopping audio playback.
-     */
+    const handleAudioStop = () => {
+        setIsAudioPlaying(false);
+        audioRef.current.pause(); // Pause the audio
+        setPlayMessage('Audio paused');
+    };
+
     const handleAudioClose = () => {
         setIsAudioPlaying(false);
+        audioRef.current.pause(); // Pause the audio
+        setPlayMessage('');
         onClose();
     };
 
     return (
         <div>
-
             <div className="audio-player">
-                <audio controls>
+                <button onClick={handleAudioPlay} className="play-button">
+                    Play
+                </button>
+                <button onClick={handleAudioStop} className="stop-button">
+                    Stop
+                </button>
+                <p>{playMessage}</p>
+                <audio controls ref={audioRef}>
                     <source src={episode.file} type="audio/mpeg" />
                     Your browser does not support the audio element.
                 </audio>
             </div>
-
         </div>
     );
 };
