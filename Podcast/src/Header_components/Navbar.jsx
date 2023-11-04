@@ -27,12 +27,14 @@ const Navbar = () => {
         width: '100%',
         zIndex: 100,
         backgroundColor: 'white',
-
     };
+
 
     return (
         <div className="navbar" style={navbarStyle}>
-            <h1>Podcast App</h1>
+            <Link to="/" className="logo-link">
+                <img src='../public/podcast-logo.png' alt="Podcast Logo" className="logo" />
+            </Link>
 
             <div className="navbar__input">
                 <Search />

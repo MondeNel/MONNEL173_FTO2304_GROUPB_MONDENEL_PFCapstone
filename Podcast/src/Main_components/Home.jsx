@@ -5,6 +5,7 @@ import Navbar from '../Header_components/Navbar';
 import GenreCarousel from '../GenreCarousel_component/GenreCarousel';
 import CircularProgress from '@mui/material/CircularProgress';
 import CarouselCard from '../Carousel_components/CarouselCard';
+import Footer from '../Footer_component/Footer';
 
 /**
  * Home component for displaying a list of shows and their details.
@@ -100,6 +101,7 @@ const Home = ({ selectedShow }) => {
             ) : (
                 <div className="main__content">
                     <Navbar />
+
                     <GenreCarousel />
                     <br />
                     <CarouselCard shows={shows} />
@@ -136,8 +138,12 @@ const Home = ({ selectedShow }) => {
                     <button onClick={toggleShowMore} className="show-more-button">
                         {showMore ? 'Show Less' : 'Show More'}
                     </button>
+                    <br />
+                    <Footer />
                 </div>
+
             )}
+
         </div>
     );
 };

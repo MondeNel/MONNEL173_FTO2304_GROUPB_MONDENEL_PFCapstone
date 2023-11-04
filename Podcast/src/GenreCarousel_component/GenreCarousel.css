@@ -4,6 +4,14 @@
     margin: 20px;
     text-align: center;
     margin-bottom: 30px;
+    margin-top: 70px;
+}
+
+.small-dropdown {
+    width: 450px;
+    /* Adjust the width as needed */
+    padding: 5px;
+    /* Adjust the padding as needed */
 }
 
 .genre-buttons {

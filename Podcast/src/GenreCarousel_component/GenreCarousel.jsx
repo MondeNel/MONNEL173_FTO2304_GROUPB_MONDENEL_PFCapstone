@@ -86,7 +86,7 @@ const GenreCarousel = () => {
             <div className="show-list">
                 <h2>{selectedGenre || 'All Genres'}</h2>
                 <div ref={dropdownRef}>
-                    <select value={selectedGenre} onChange={(e) => handleGenreSelect(e.target.value)}>
+                    <select value={selectedGenre} onChange={(e) => handleGenreSelect(e.target.value)} className="small-dropdown">
                         <option value="">select</option>
                         {Object.values(genreMap).map((genre, index) => (
                             <option key={index} value={genre}>
@@ -94,6 +94,7 @@ const GenreCarousel = () => {
                             </option>
                         ))}
                     </select>
+
                 </div>
                 <ul>
                     {filteredShows.map((show, index) => (

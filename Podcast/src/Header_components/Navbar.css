@@ -6,6 +6,7 @@
     background-color: white;
     /* Add a background color */
     border: 1px solid lightgray;
+    margin-left: 60px;
 }
 
 .search__icon {
@@ -248,4 +249,16 @@
 .log-out-button:hover {
     color: red;
     /* Change color on hover */
+}
+
+/* Navbar.css */
+.logo-link {
+    padding: 10px;
+}
+
+.logo {
+    width: 80px;
+    /* Adjust the width as needed */
+    height: auto;
+    /* Maintain the aspect ratio */
 }

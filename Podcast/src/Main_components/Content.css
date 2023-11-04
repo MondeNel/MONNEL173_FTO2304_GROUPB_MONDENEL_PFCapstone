@@ -55,13 +55,14 @@
     /* Increase padding for a larger button */
     border: none;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 10px;
     display: block;
     /* Make it a block element */
     margin: 0 auto;
     /* Center the button horizontally */
     text-align: center;
     /* Center text within the button */
+    border-radius: 5px;
 }
 
 .show-more-button:hover {
