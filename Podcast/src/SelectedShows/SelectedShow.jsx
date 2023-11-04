@@ -99,19 +99,10 @@ const SelectedShow = () => {
         fetchSeasonData();
     }, [selectedShow, selectedSeason]);
 
-    function formatDateTime(dateTimeString) {
-        const options = {
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            timeZoneName: 'short',
-        };
-        return new Date(dateTimeString).toLocaleDateString(undefined, options);
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        return new Date(dateString).toLocaleDateString(undefined, options);
     }
-
 
 
 
@@ -162,37 +153,27 @@ const SelectedShow = () => {
 
                                 <br />
 
-                                <Typography>{`Date: ${new Date(selectedShow.updated).toLocaleString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit',
-                                    second: '2-digit',
-                                })}`}</Typography>
+                                <Typography>{`Date: ${formatDate(selectedShow.updated)}`}</Typography>
+
 
                                 <IconButton
-                                    style={{ color: isFavorite ? 'red' : 'grey' }}
+                                    style={{ color: isFavorite(episode.title) ? 'red' : 'grey' }}
                                     className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
                                     onClick={() => toggleFavoriteEpisode(episode, isFavorite(episode.title))}
                                 >
                                     {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
 
-                            </CardContent>
-                            <CardActions>
-
                                 <AudioPlayer
-                                    episode={{ file: selectedEpisodeAudio }}
+                                    episode={{ file: "https://podcast-api.netlify.app/placeholder-audio.mp3" }}
                                     isPlaying={isAudioPlaying}
                                     onClose={() => setIsAudioPlaying(false)}
                                 />
 
-
-
-                            </CardActions>
+                            </CardContent>
                         </Card>
                     ))}
+
 
 
 

@@ -142,8 +142,6 @@ const Home = ({ selectedShow }) => {
                             <h3>{selectedShow.title}</h3>
                             <img src={selectedShow.image} alt={selectedShow.title} />
                             <p>{selectedShow.description}</p>
-                            {/* add the seasons dropdown */}
-                            {/* add the episodes dropdown */}
                         </div>
                     )}
 
