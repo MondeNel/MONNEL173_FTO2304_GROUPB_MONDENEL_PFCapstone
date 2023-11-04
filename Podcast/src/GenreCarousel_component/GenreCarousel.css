@@ -63,7 +63,7 @@ button.selected {
 
 .show-list li:hover {
     background-color: #e0e0e0;
-    /* Change background color on hover */
+    cursor: pointer;
 }
 
 .option {

@@ -8,33 +8,6 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.container {
-  padding: 4rem;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
-
-h1 {
-  font-size: 30px;
-  letter-spacing: 0.9px;
-  background: linear-gradient(90deg,
-      rgba(5, 3, 122, 0.725) 0%,
-      rgba(29, 83, 15, 0) 100%);
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  width: fit-content;
-}
-
-h2 {
-  font-size: 25px;
-  margin-left: 10px;
-  margin-bottom: 15px;
-}
-
 /* Center the loading circle */
 .loading-container {
   display: flex;

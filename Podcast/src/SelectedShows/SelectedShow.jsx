@@ -129,6 +129,11 @@ const SelectedShow = () => {
 
                     <br />
 
+                    {/* Display the number of seasons as a number */}
+                    <h3>Seasons : {selectedShow.seasons}</h3>
+
+                    <br />
+
                     {/* Display the number of seasons in a dropdown */}
                     <div className="dropdowns">
                         <label htmlFor="season" className='select'>Select a season:</label>
@@ -166,16 +171,6 @@ const SelectedShow = () => {
                                     second: '2-digit',
                                 })}`}</Typography>
 
-
-                            </CardContent>
-                            <CardActions>
-
-                                <AudioPlayer
-                                    episode={{ file: selectedEpisodeAudio }}
-                                    isPlaying={isAudioPlaying} // Step 5: Pass isAudioPlaying to AudioPlayer
-                                    onClose={() => setIsAudioPlaying(false)}
-                                />
-
                                 <IconButton
                                     style={{ color: isFavorite ? 'red' : 'grey' }}
                                     className={`favorite-icon ${isFavorite(episode.title) ? 'active' : ''}`}
@@ -183,6 +178,17 @@ const SelectedShow = () => {
                                 >
                                     {isFavorite(episode.title) ? <FavoriteIcon /> : <FavoriteBorderIcon />}
                                 </IconButton>
+
+                            </CardContent>
+                            <CardActions>
+
+                                <AudioPlayer
+                                    episode={{ file: selectedEpisodeAudio }}
+                                    isPlaying={isAudioPlaying}
+                                    onClose={() => setIsAudioPlaying(false)}
+                                />
+
+
 
                             </CardActions>
                         </Card>
