@@ -14,8 +14,10 @@ import supabase from '../config/supabaseClient';
 const FavoriteList = () => {
     const [favoriteShows, setFavoriteShows] = useState([]);
     const [loading, setLoading] = useState(true);
-    const [sortAscending, setSortAscending] = useState(true);
     const [showMore, setShowMore] = useState(false);
+    const [sortOption, setSortOption] = useState('dateAsc'); // Default sorting option
+    const [sortTitleOption, setSortTitleOption] = useState('titleAsc'); // Default sorting option
+
 
     useEffect(() => {
         setTimeout(() => {
@@ -43,6 +45,18 @@ const FavoriteList = () => {
         }
     };
 
+    const sortFavoriteShowsByTitle = (option) => {
+        let sorted;
+
+        if (option === 'titleAsc') {
+            sorted = favoriteShows.slice().sort((a, b) => a.title.localeCompare(b.title));
+        } else if (option === 'titleDesc') {
+            sorted = favoriteShows.slice().sort((a, b) => b.title.localeCompare(a.title));
+        }
+
+        updateFavoriteShows(sorted);
+    };
+
     /**
      * Updates the list of favorite shows.
      *
@@ -52,12 +66,7 @@ const FavoriteList = () => {
         setFavoriteShows(updatedShows);
     };
 
-    /**
-     * Toggles the sort order of favorite shows.
-     */
-    const toggleSortOrder = () => {
-        setSortAscending((prevSortAscending) => !prevSortAscending);
-    };
+
 
     /**
      * Toggles the display of more or fewer favorite shows.
@@ -87,15 +96,20 @@ const FavoriteList = () => {
         }
     };
 
-    const sortedFavoriteShows = favoriteShows.slice().sort((a, b) => {
-        if (sortAscending) {
-            return a.title.localeCompare(b.title);
-        } else {
-            return b.title.localeCompare(a.title);
+    /**
+ * Sort favorite shows by date in ascending or descending order and log the results.
+ */
+    const sortFavoriteShows = () => {
+        if (sortOption === 'dateAsc') {
+            const sorted = favoriteShows.slice().sort((a, b) => new Date(a.updated) - new Date(b.updated));
+            updateFavoriteShows(sorted);
+            console.log('Sorted by date in ascending order:', sorted);
+        } else if (sortOption === 'dateDesc') {
+            const sorted = favoriteShows.slice().sort((a, b) => new Date(b.updated) - new Date(a.updated));
+            updateFavoriteShows(sorted);
+            console.log('Sorted by date in descending order:', sorted);
         }
-    });
-
-    const visibleFavoriteShows = showMore ? sortedFavoriteShows : sortedFavoriteShows.slice(0, 5);
+    };
 
     /**
      * Formats a date and time string into a readable format.
@@ -111,10 +125,34 @@ const FavoriteList = () => {
     return (
         <div>
             <h1 className='title'>Favorite Shows</h1>
+            <br />
+            <h4>Sort shows based on dates</h4>
+            <br />
+            <select
+                value={sortOption}
+                onChange={(e) => {
+                    setSortOption(e.target.value);
+                    sortFavoriteShows(); // Call the sorting function when the user selects an option
+                }}
+                className="sort-dropdown"
+            >
+                <option value="dateAsc">New to Old</option>
+                <option value="dateDesc">Old to New</option>
+            </select>
 
-            <button className='sort-button' onClick={toggleSortOrder}>
-                {sortAscending ? 'Sort Descending' : 'Sort Ascending'}
-            </button>
+            <select
+                value={sortTitleOption}
+                onChange={(e) => {
+                    setSortTitleOption(e.target.value);
+                    sortFavoriteShowsByTitle(e.target.value);
+                }}
+                className="sort-dropdown"
+            >
+                <option value="titleAsc">Sort by Title A-Z</option>
+                <option value="titleDesc">Sort by Title Z-A</option>
+            </select>
+
+
 
             <br />
 
@@ -124,7 +162,7 @@ const FavoriteList = () => {
                 </div>
             ) : (
                 <div className="grid_container">
-                    {visibleFavoriteShows.map((show, index) => (
+                    {favoriteShows.map((show, index) => (
                         <div key={show.id}>
                             <ShowCard
                                 show={show}
@@ -136,11 +174,9 @@ const FavoriteList = () => {
                                 className="delete-icon"
                             />
                             <p className='date_time'>Added on: {formatDateTime(show.added_at)}</p>
-
                         </div>
                     ))}
                 </div>
-
             )}
 
             <br />

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import ShowCard from './ShowCard';
 import './Content.css';
 import Navbar from '../Header_components/Navbar';
-import GenreCarousel from '../GenreCarousel_component/GenreCarousel'
+import GenreCarousel from '../GenreCarousel_component/GenreCarousel';
 import CircularProgress from '@mui/material/CircularProgress';
 import CarouselCard from '../Carousel_components/CarouselCard';
 
@@ -17,11 +17,35 @@ const Home = ({ selectedShow }) => {
     const [shows, setShows] = useState([]);
     const [visibleShows, setVisibleShows] = useState([]);
     const [showMore, setShowMore] = useState(false);
-    const [sortAscending, setSortAscending] = useState(true);
     const [loading, setLoading] = useState(true);
+    const [sortOption, setSortOption] = useState('titleAsc');
 
+    const handleSortChange = (event) => {
+        setSortOption(event.target.value);
+    };
 
+    useEffect(() => {
+        const numVisibleShows = showMore ? shows.length : 5;
 
+        let sortedShows;
+        switch (sortOption) {
+            case 'titleAsc':
+                sortedShows = shows.slice().sort((a, b) => a.title.localeCompare(b.title));
+                break;
+            case 'titleDesc':
+                sortedShows = shows.slice().sort((a, b) => b.title.localeCompare(a.title));
+                break;
+            default:
+                sortedShows = shows;
+                break;
+        }
+
+        setVisibleShows(sortedShows.slice(0, numVisibleShows));
+    }, [shows, showMore, sortOption]);
+
+    const toggleShowMore = () => {
+        setShowMore((prevShowMore) => !prevShowMore);
+    };
 
     // Define the mapping between GENRE ids and titles
     const genreMapping = {
@@ -45,7 +69,7 @@ const Home = ({ selectedShow }) => {
             fetch(apiUrl)
                 .then((response) => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw Error('Network response was not ok');
                     }
                     return response.json();
                 })
@@ -63,45 +87,6 @@ const Home = ({ selectedShow }) => {
         return () => clearTimeout(loadingTimeout);
     }, []);
 
-    useEffect(() => {
-        // Set the number of visible shows based on whether "Show More" is clicked
-        const numVisibleShows = showMore ? shows.length : 5;
-        const sorted = shows.slice().sort((a, b) => {
-            if (sortAscending) {
-                return a.title.localeCompare(b.title);
-            } else {
-                return b.title.localeCompare(a.title);
-            }
-        });
-        setVisibleShows(sorted.slice(0, numVisibleShows));
-    }, [shows, showMore, sortAscending]);
-
-    const toggleShowMore = () => {
-        setShowMore((prevShowMore) => !prevShowMore);
-    };
-
-    const toggleSortOrder = () => {
-        setSortAscending((prevSortAscending) => !prevSortAscending);
-    };
-
-    const sortShowsByDate = () => {
-        const sorted = shows.slice().sort((a, b) => {
-            // Parse and format the dates, then compare them
-            const formattedDateA = formatDate(a.date);
-            const formattedDateB = formatDate(b.date);
-
-            if (sortAscending) {
-                return formattedDateA.localeCompare(formattedDateB); // Ascending order
-            } else {
-                return formattedDateB.localeCompare(formattedDateA); // Descending order
-            }
-        });
-
-        setShows(sorted);
-    };
-
-
-
     const logFavoriteShow = (message) => {
         console.log(message);
     };
@@ -115,27 +100,20 @@ const Home = ({ selectedShow }) => {
             ) : (
                 <div className="main__content">
                     <Navbar />
-
                     <GenreCarousel />
-
                     <br />
-
                     <CarouselCard shows={shows} />
-
-
                     <br />
-
-                    <h2>Shows to Listen </h2>
-                    <button onClick={toggleSortOrder} className="sort-button">
-                        Sort by Title {sortAscending ? 'A-Z' : 'Z-A'}
-                    </button>
-
-
-                    <button onClick={sortShowsByDate} className="sort-button">
-                        Sort by Date {sortAscending ? 'Ascending' : 'Descending'}
-                    </button>
-
-
+                    <h1>Shows available to browse and listen to...</h1>
+                    <br />
+                    <select
+                        value={sortOption}
+                        onChange={handleSortChange}
+                        className="sort-dropdown"
+                    >
+                        <option value="titleAsc">Sort by Title A-Z</option>
+                        <option value="titleDesc">Sort by Title Z-A</option>
+                    </select>
                     {selectedShow && (
                         <div className="selected-show">
                             <h2>Selected Show</h2>
@@ -144,10 +122,7 @@ const Home = ({ selectedShow }) => {
                             <p>{selectedShow.description}</p>
                         </div>
                     )}
-
-
                     <div className="grid__container">
-                        {/* Step 3: Map through the shows and display ShowCard components */}
                         {visibleShows.map((show, index) => (
                             <ShowCard
                                 key={index}
