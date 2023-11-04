@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import SearchResultsDialog from '../Search_Results/SearchResultsDialog';
 import './Navbar.css';
+import Fuse from 'fuse.js'; // Import Fuse.js
 
 const API_URL = 'https://podcast-api.netlify.app/shows';
 
@@ -16,6 +17,23 @@ const Search = () => {
     const [showResults, setShowResults] = useState(false);
     const [selectedShow, setSelectedShow] = useState(null);
 
+    // Define the options for Fuse.js
+    const fuseOptions = {
+        includeScore: true,
+        keys: ['title'],
+    };
+
+    // Create a new Fuse instance with your data and options
+    const fuse = new Fuse([], fuseOptions);
+
+    useEffect(() => {
+        document.addEventListener('click', handleDocumentClick);
+
+        return () => {
+            document.removeEventListener('click', handleDocumentClick);
+        };
+    }, []);
+
     /**
      * Opens the results dialog when a search result is clicked.
      *
@@ -25,14 +43,6 @@ const Search = () => {
         setSelectedShow(show);
         setShowResults(false);
     };
-
-    useEffect(() => {
-        document.addEventListener('click', handleDocumentClick);
-
-        return () => {
-            document.removeEventListener('click', handleDocumentClick);
-        };
-    }, []);
 
     /**
      * Handles clicks outside the input wrapper to close the results dialog.
@@ -59,9 +69,11 @@ const Search = () => {
                 return response.json();
             })
             .then((data) => {
-                const filteredShows = data.filter((show) => {
-                    return show.title.toLowerCase().includes(value.toLowerCase());
-                });
+                // Update the Fuse instance with the new data
+                fuse.setCollection(data);
+
+                const result = fuse.search(value);
+                const filteredShows = result.map((show) => show.item);
 
                 setFilteredData(filteredShows);
                 setShowResults(true);
