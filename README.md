@@ -28,10 +28,6 @@ The Podcast App is a web application that allows users to discover, explore, and
 
   
 
-## To view the application
-
--  The app will be accessible at https://react-podcast-app.netlify.app/
-
 
 ## Contributing
 
