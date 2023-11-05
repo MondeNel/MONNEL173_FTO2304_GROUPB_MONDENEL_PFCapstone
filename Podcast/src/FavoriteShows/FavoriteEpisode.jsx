@@ -130,17 +130,11 @@ const FavoriteEpisode = () => {
                 {showMore ? 'Show Less' : 'Show More'}
             </button>
 
-            {/* AudioPlayer component */}
-            <AudioPlayer
-                episode={{ file: selectedEpisodeAudio }}
-                isPlaying={isAudioPlaying}
-                onClose={() => setIsAudioPlaying(false)}
-            />
 
             <Dialog open={isEpisodeModalOpen} onClose={() => setIsEpisodeModalOpen(false)}>
                 <DialogTitle>Episode Player</DialogTitle>
                 <DialogContent>
-                    <audio controls className="audio-player"> {/* Apply the "audio-player" class for styling */}
+                    <audio controls>
                         <source src={selectedEpisodeAudio} type="audio/mpeg" />
                         Your browser does not support the audio element.
                     </audio>

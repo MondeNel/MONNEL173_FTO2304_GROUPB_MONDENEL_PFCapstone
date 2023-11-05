@@ -33,7 +33,8 @@ const Navbar = () => {
     return (
         <div className="navbar" style={navbarStyle}>
             <Link to="/" className="logo-link">
-                <img src='../public/podcast-logo.png' alt="Podcast Logo" className="logo" />
+                <img src='/podcast-microphone.jpg' alt="Podcast Logo" className="logo" />
+
             </Link>
 
             <div className="navbar__input">
