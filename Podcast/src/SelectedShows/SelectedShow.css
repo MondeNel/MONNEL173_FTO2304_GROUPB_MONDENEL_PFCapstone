@@ -139,3 +139,11 @@
 .go_back:hover {
     color: black;
 }
+
+.dialog_button:hover {
+    color: black;
+}
+
+.dialog_text {
+    color: black;
+}

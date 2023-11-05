@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Container, Typography, Button, Card, CardContent, CardActions, IconButton } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import './SelectedShow.css';
@@ -16,6 +17,9 @@ const SelectedShow = () => {
     const [isAudioPlaying, setIsAudioPlaying] = useState(false);
     const [selectedEpisodeAudio, setSelectedEpisodeAudio] = useState('');
     const [favorites, setFavorites] = useState([]); // Track favorite episodes
+    const [openModal, setOpenModal] = useState(false);
+    const [userDecision, setUserDecision] = useState(false);
+
 
 
     const [playMessage, setPlayMessage] = useState('');
@@ -102,6 +106,16 @@ const SelectedShow = () => {
         fetchSeasonData();
     }, [selectedShow, selectedSeason]);
 
+    useEffect(() => {
+        if (userDecision) {
+            if (userDecision === true) {
+                // User clicked 'Yes,' navigate to the home page
+                goBackToHome();
+            }
+        }
+    }, [userDecision]);
+
+
     function formatDate(dateString) {
         const options = { year: 'numeric', month: 'long', day: 'numeric' };
         return new Date(dateString).toLocaleDateString(undefined, options);
@@ -117,9 +131,40 @@ const SelectedShow = () => {
         setPlayMessage('Audio is currently playing.');
     };
 
+    const openConfirmationModal = () => {
+        setOpenModal(true);
+    };
+
+    const closeConfirmationModal = (decision) => {
+        setUserDecision(decision);
+        setOpenModal(false);
+    };
+
+
 
     return (
         <Container className="selected-show-container">
+            <Button className="go_back" onClick={openConfirmationModal}>Go back</Button>
+
+            <Dialog open={openModal} onClose={() => closeConfirmationModal(false)}>
+                <DialogTitle>Confirm Leaving</DialogTitle>
+                <DialogContent>
+                    <DialogContentText className='dialog_text'>
+                        Are you sure you want to leave this page?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => closeConfirmationModal(false)} className='dialog_button'>
+                        No
+                    </Button>
+                    <Button onClick={() => closeConfirmationModal(true)} className='dialog_button'>
+                        Yes
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+
+            <br />
             {selectedShow ? (
                 <div>
                     <Typography variant="h5">{selectedShow.title}</Typography>
@@ -189,12 +234,6 @@ const SelectedShow = () => {
                             </CardContent>
                         </Card>
                     ))}
-
-
-
-
-                    <Button className='go_back' onClick={goBackToHome}>Go back</Button>
-
 
                 </div>
             ) : (

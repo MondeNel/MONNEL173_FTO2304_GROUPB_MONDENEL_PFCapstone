@@ -126,7 +126,7 @@ const FavoriteList = () => {
         <div>
             <h1 className='title'>Favorite Shows</h1>
             <br />
-            <h4>Sort shows based on dates</h4>
+            <h4>Sort shows based on</h4>
             <br />
             <select
                 value={sortOption}
