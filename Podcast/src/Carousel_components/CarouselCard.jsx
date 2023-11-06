@@ -3,16 +3,15 @@ import ShowCard from '../Main_components/ShowCard';
 import './Carousel.css'; // Create a CSS file for styling
 
 /**
- * Carousel component displays a sliding carousel of show cards.
+ * CarouselCard component displays a sliding carousel of show cards.
  *
- * @returns {JSX.Element} The Carousel component JSX.
+ * @returns {JSX.Element} The CarouselCard component JSX.
  */
 const CarouselCard = () => {
-    const [shows, setShows] = useState([]); // State to store the fetched show data
+    const [shows, setShows] = useState([]);
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    // Define your visibleShows variable to select the subset of shows to display.
-    // For example, you can slice the shows array to display a subset.
+    // Slice the shows array to determine the visible shows in the carousel
     const visibleShows = shows.slice(currentIndex, currentIndex + 4);
 
     // Define genreMapping object to map genre IDs to their names
@@ -34,12 +33,16 @@ const CarouselCard = () => {
         console.log(message);
     };
 
-    // Function to navigate to the next show in the carousel
+    /**
+     * Function to navigate to the next show in the carousel.
+     */
     const nextSlide = () => {
         setCurrentIndex((currentIndex + 1) % shows.length);
     };
 
-    // Function to navigate to the previous show in the carousel
+    /**
+     * Function to navigate to the previous show in the carousel.
+     */
     const prevSlide = () => {
         setCurrentIndex((currentIndex - 1 + shows.length) % shows.length);
     };
@@ -80,9 +83,7 @@ const CarouselCard = () => {
                 <button className="carousel-button next top-right" onClick={nextSlide}>
                     Next
                 </button>
-
             </div>
-
         </div>
     );
 };

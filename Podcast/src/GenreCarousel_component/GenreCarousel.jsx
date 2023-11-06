@@ -61,6 +61,11 @@ const GenreCarousel = () => {
         }
     };
 
+    /**
+     * Handle the selection of a genre.
+     *
+     * @param {string} genre - The selected genre.
+     */
     const handleGenreSelect = (genre) => {
         setSelectedGenre(genre);
 
@@ -73,10 +78,18 @@ const GenreCarousel = () => {
         }
     };
 
+    /**
+     * Open a modal to display details of a selected show.
+     *
+     * @param {Object} show - The selected show data.
+     */
     const openModal = (show) => {
         setSelectedShow(show);
     };
 
+    /**
+     * Close the modal.
+     */
     const closeModal = () => {
         setSelectedShow(null);
     };
@@ -94,7 +107,6 @@ const GenreCarousel = () => {
                             </option>
                         ))}
                     </select>
-
                 </div>
                 <ul>
                     {filteredShows.map((show, index) => (

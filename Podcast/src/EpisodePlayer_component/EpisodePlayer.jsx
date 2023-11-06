@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import supabase from '../config/supabaseClient';
 
+/**
+ * EpisodePlayer component displays a list of last played episodes fetched from Supabase.
+ *
+ * @returns {JSX.Element} The EpisodePlayer component JSX.
+ */
 const EpisodePlayer = () => {
     const [lastPlayedEpisodes, setLastPlayedEpisodes] = useState([]);
 
@@ -8,7 +13,6 @@ const EpisodePlayer = () => {
         // Define an async function to fetch data from the Supabase table
         const fetchLastPlayedEpisodes = async () => {
             try {
-                // Replace 'last_listened_episodes' with your actual table name
                 const { data, error } = await supabase.from('last_listened_episodes').select('*');
                 if (error) {
                     console.error('Error fetching data:', error);
@@ -34,7 +38,6 @@ const EpisodePlayer = () => {
                         {/* Display episode information, e.g., title, date, etc. */}
                         <p>Episode ID: {episode.id}</p>
                         <p>Date: {episode.date}</p>
-                        {/* Add more properties as needed */}
                     </li>
                 ))}
             </ul>
