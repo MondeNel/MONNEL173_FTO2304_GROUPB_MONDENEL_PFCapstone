@@ -42,3 +42,7 @@ This project is licensed under the [MIT License](LICENSE).
 If you have any questions or need further assistance, please feel free to contact me at mondenel1996@gmail.com.
 
 Happy podcasting!
+
+
+### An overview of how the application look 
+![Podcast App Screenshot](https://github.com/MondeNel/MONNEL173_FTO2304_GROUPB_MONDENEL_PFCapstone/raw/c87dfb5a0abc0558e247fef46f12f6f4d9bc2282/Screenshot%20(13).png)
