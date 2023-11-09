@@ -46,3 +46,5 @@ Happy podcasting!
 
 ### An overview of how the application look 
 ![Podcast App Screenshot](https://github.com/MondeNel/MONNEL173_FTO2304_GROUPB_MONDENEL_PFCapstone/raw/c87dfb5a0abc0558e247fef46f12f6f4d9bc2282/Screenshot%20(13).png)
+![Another Podcast App Screenshot](https://github.com/MondeNel/MONNEL173_FTO2304_GROUPB_MONDENEL_PFCapstone/raw/c87dfb5a0abc0558e247fef46f12f6f4d9bc2282/Screenshot%20(14).png)
+
